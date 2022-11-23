@@ -23,6 +23,7 @@ import static org.apache.dolphinscheduler.plugin.task.api.TaskConstants.PARAMETE
 
 import org.apache.dolphinscheduler.common.utils.DateUtils;
 import org.apache.dolphinscheduler.common.utils.JSONUtils;
+import org.apache.dolphinscheduler.plugin.task.api.TaskExecutionContext;
 import org.apache.dolphinscheduler.plugin.task.api.enums.DataType;
 import org.apache.dolphinscheduler.plugin.task.api.model.Property;
 
@@ -85,6 +86,38 @@ public class ParameterUtils {
             return dateTemplateParse(parameterString, cronTime);
         }
         return parameterString;
+    }
+
+    /**
+     * convert parameters place holders
+     *
+     * @param taskExecutionContext
+     * @param parameterString parameter
+     * @param parameterMap    parameter map
+     * @return convert parameters place holders
+     */
+    public static String convertParameterPlaceholders(TaskExecutionContext taskExecutionContext, String parameterString, Map<String, String> parameterMap) {
+        if (StringUtils.isEmpty(parameterString)) {
+            return parameterString;
+        }
+        Date cronTime;
+        if (parameterMap != null && !parameterMap.isEmpty()) {
+            // replace variable ${} form,refers to the replacement of system variables and custom variables
+            parameterString = PlaceholderUtils.replacePlaceholders(parameterString, parameterMap, true);
+        }
+        if (parameterMap != null && null != parameterMap.get(PARAMETER_DATETIME)) {
+            // Get current time, schedule execute time
+            String cronTimeStr = parameterMap.get(PARAMETER_DATETIME);
+            cronTime = DateUtils.parse(cronTimeStr, PARAMETER_FORMAT_TIME);
+        } else {
+            cronTime = new Date();
+        }
+        return BuildInParametersUtils.buildInParametersTemplateParse(taskExecutionContext, parameterString, cronTime);
+        // replace time $[...] form, eg. $[yyyyMMdd]
+//        if (cronTime != null) {
+//            return dateTemplateParse(parameterString, cronTime);
+//        }
+//        return parameterString;
     }
 
     /**

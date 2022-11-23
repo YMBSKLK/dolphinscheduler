@@ -202,7 +202,7 @@ public class SeatunnelTask extends AbstractRemoteTask {
     private String parseScript(String script) {
         // combining local and global parameters
         Map<String, Property> paramsMap = taskExecutionContext.getPrepareParamsMap();
-        return ParameterUtils.convertParameterPlaceholders(script, ParamUtils.convert(paramsMap));
+        return ParameterUtils.convertParameterPlaceholders(taskExecutionContext, script, ParamUtils.convert(paramsMap));
     }
 
     public void setSeatunnelParameters(SeatunnelParameters seatunnelParameters) {
