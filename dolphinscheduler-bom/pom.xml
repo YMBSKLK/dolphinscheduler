@@ -371,7 +371,8 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector.version}</version>
-                <scope>test</scope>
+                <scope>compile</scope>
+                <!--                <scope>test</scope>-->
             </dependency>
 
             <dependency>

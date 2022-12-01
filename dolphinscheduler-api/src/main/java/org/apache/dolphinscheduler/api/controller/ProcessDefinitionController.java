@@ -36,7 +36,6 @@ import static org.apache.dolphinscheduler.api.enums.Status.SWITCH_PROCESS_DEFINI
 import static org.apache.dolphinscheduler.api.enums.Status.UPDATE_PROCESS_DEFINITION_ERROR;
 import static org.apache.dolphinscheduler.api.enums.Status.VERIFY_PROCESS_DEFINITION_NAME_UNIQUE_ERROR;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.dolphinscheduler.api.aspect.AccessLogAnnotation;
 import org.apache.dolphinscheduler.api.enums.Status;
 import org.apache.dolphinscheduler.api.exceptions.ApiException;
@@ -49,6 +48,8 @@ import org.apache.dolphinscheduler.common.enums.ReleaseState;
 import org.apache.dolphinscheduler.dao.entity.ProcessDefinition;
 import org.apache.dolphinscheduler.dao.entity.User;
 import org.apache.dolphinscheduler.plugin.task.api.utils.ParameterUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
@@ -129,7 +130,7 @@ public class ProcessDefinitionController extends BaseController {
                                           @RequestParam(value = "taskDefinitionJson", required = true) String taskDefinitionJson,
                                           @RequestParam(value = "otherParamsJson", required = false) String otherParamsJson,
                                           @RequestParam(value = "executionType", defaultValue = "PARALLEL") ProcessExecutionTypeEnum executionType) {
-        if(StringUtils.isBlank(tenantCode)){
+        if (StringUtils.isBlank(tenantCode)) {
             tenantCode = loginUser.getTenantCode();
         }
         Map<String, Object> result = processDefinitionService.createProcessDefinition(loginUser, projectCode, name,
@@ -260,7 +261,7 @@ public class ProcessDefinitionController extends BaseController {
                                           @RequestParam(value = "otherParamsJson", required = false) String otherParamsJson,
                                           @RequestParam(value = "executionType", defaultValue = "PARALLEL") ProcessExecutionTypeEnum executionType,
                                           @RequestParam(value = "releaseState", required = false, defaultValue = "OFFLINE") ReleaseState releaseState) {
-        if(StringUtils.isBlank(tenantCode)){
+        if (StringUtils.isBlank(tenantCode)) {
             tenantCode = loginUser.getTenantCode();
         }
         Map<String, Object> result = processDefinitionService.updateProcessDefinition(loginUser, projectCode, name,
@@ -792,7 +793,7 @@ public class ProcessDefinitionController extends BaseController {
                                                @RequestParam(value = "tenantCode", required = false) String tenantCode,
                                                @RequestParam(value = "scheduleJson", required = false) String scheduleJson,
                                                @RequestParam(value = "executionType", defaultValue = "PARALLEL") ProcessExecutionTypeEnum executionType) {
-        if(StringUtils.isBlank(tenantCode)){
+        if (StringUtils.isBlank(tenantCode)) {
             tenantCode = loginUser.getTenantCode();
         }
         return returnDataList(processDefinitionService.createEmptyProcessDefinition(loginUser, projectCode, name,
@@ -841,7 +842,7 @@ public class ProcessDefinitionController extends BaseController {
                                                    @RequestParam(value = "otherParamsJson", required = false) String otherParamsJson,
                                                    @RequestParam(value = "executionType", defaultValue = "PARALLEL") ProcessExecutionTypeEnum executionType,
                                                    @RequestParam(value = "releaseState", required = false, defaultValue = "OFFLINE") ReleaseState releaseState) {
-        if(StringUtils.isBlank(tenantCode)){
+        if (StringUtils.isBlank(tenantCode)) {
             tenantCode = loginUser.getTenantCode();
         }
         Map<String, Object> result = processDefinitionService.updateProcessDefinitionBasicInfo(loginUser, projectCode,
