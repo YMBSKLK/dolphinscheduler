@@ -23,6 +23,10 @@ public class BuildInParametersUtils {
 
     private static final String TASK_NAME_PATTERN = "\\$\\[task_name\\]";
 
+    private static final String PROJECT_CODE_PATTERN = "\\$\\[project_code\\]";
+
+    private static final String START_TIME_PATTERN = "\\$\\[start_time\\]";
+
     public static String buildInParametersTemplateParse(TaskExecutionContext context, String templateStr, Date date) {
         if (templateStr == null) {
             return null;
@@ -32,8 +36,34 @@ public class BuildInParametersUtils {
         templateStr = taskInstanceIdTemplateParse(templateStr, context);
         templateStr = processDefineCodeTemplateParse(templateStr, context);
         templateStr = taskNameTemplateParse(templateStr, context);
+        templateStr = projectCodeTemplateParse(templateStr, context);
+        templateStr = startTimeTemplateParse(templateStr, context);
         templateStr = dateTemplateParse(templateStr, date);
         return templateStr;
+    }
+
+    private static String startTimeTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext) {
+        String startTime = String.valueOf(taskExecutionContext.getStartTime());
+        Pattern pattern = Pattern.compile(START_TIME_PATTERN, Pattern.CASE_INSENSITIVE);
+        StringBuffer newValue = new StringBuffer(templateStr.length());
+        Matcher matcher = pattern.matcher(templateStr);
+        while (matcher.find()) {
+            matcher.appendReplacement(newValue, startTime);
+        }
+        matcher.appendTail(newValue);
+        return newValue.toString();
+    }
+
+    private static String projectCodeTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext) {
+        String projectCode = String.valueOf(taskExecutionContext.getProjectCode());
+        Pattern pattern = Pattern.compile(PROJECT_CODE_PATTERN, Pattern.CASE_INSENSITIVE);
+        StringBuffer newValue = new StringBuffer(templateStr.length());
+        Matcher matcher = pattern.matcher(templateStr);
+        while (matcher.find()) {
+            matcher.appendReplacement(newValue, projectCode);
+        }
+        matcher.appendTail(newValue);
+        return newValue.toString();
     }
 
     private static String randomLongIdTemplateParse(String templateStr) {
