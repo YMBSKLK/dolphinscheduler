@@ -23,8 +23,12 @@ public class BuildInParametersUtils {
 
     private static final String TASK_NAME_PATTERN = "\\$\\[task_name\\]";
 
-    public static String buildInParametersTemplateParse(TaskExecutionContext context, String templateStr, Date date){
-        if(templateStr == null){
+    private static final String PROJECT_CODE_PATTERN = "\\$\\[project_code\\]";
+
+    private static final String START_TIME_PATTERN = "\\$\\[start_time\\]";
+
+    public static String buildInParametersTemplateParse(TaskExecutionContext context, String templateStr, Date date) {
+        if (templateStr == null) {
             return null;
         }
         templateStr = randomLongIdTemplateParse(templateStr);
@@ -32,22 +36,49 @@ public class BuildInParametersUtils {
         templateStr = taskInstanceIdTemplateParse(templateStr, context);
         templateStr = processDefineCodeTemplateParse(templateStr, context);
         templateStr = taskNameTemplateParse(templateStr, context);
+        templateStr = projectCodeTemplateParse(templateStr, context);
+        templateStr = startTimeTemplateParse(templateStr, context);
         templateStr = dateTemplateParse(templateStr, date);
         return templateStr;
     }
 
-    private static String randomLongIdTemplateParse(String templateStr){
-        Pattern pattern = Pattern.compile(RANDOM_LONG_ID_PATTERN, Pattern.CASE_INSENSITIVE);
+    private static String startTimeTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext) {
+        String startTime = String.valueOf(taskExecutionContext.getStartTime());
+        Pattern pattern = Pattern.compile(START_TIME_PATTERN, Pattern.CASE_INSENSITIVE);
         StringBuffer newValue = new StringBuffer(templateStr.length());
         Matcher matcher = pattern.matcher(templateStr);
         while (matcher.find()) {
-            matcher.appendReplacement(newValue, String.valueOf(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE));
+            matcher.appendReplacement(newValue, startTime);
         }
         matcher.appendTail(newValue);
         return newValue.toString();
     }
 
-    private static String taskNameTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext){
+    private static String projectCodeTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext) {
+        String projectCode = String.valueOf(taskExecutionContext.getProjectCode());
+        Pattern pattern = Pattern.compile(PROJECT_CODE_PATTERN, Pattern.CASE_INSENSITIVE);
+        StringBuffer newValue = new StringBuffer(templateStr.length());
+        Matcher matcher = pattern.matcher(templateStr);
+        while (matcher.find()) {
+            matcher.appendReplacement(newValue, projectCode);
+        }
+        matcher.appendTail(newValue);
+        return newValue.toString();
+    }
+
+    private static String randomLongIdTemplateParse(String templateStr) {
+        Pattern pattern = Pattern.compile(RANDOM_LONG_ID_PATTERN, Pattern.CASE_INSENSITIVE);
+        StringBuffer newValue = new StringBuffer(templateStr.length());
+        Matcher matcher = pattern.matcher(templateStr);
+        while (matcher.find()) {
+            matcher.appendReplacement(newValue,
+                    String.valueOf(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE));
+        }
+        matcher.appendTail(newValue);
+        return newValue.toString();
+    }
+
+    private static String taskNameTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext) {
         String taskName = String.valueOf(taskExecutionContext.getTaskName());
         Pattern pattern = Pattern.compile(TASK_NAME_PATTERN, Pattern.CASE_INSENSITIVE);
         StringBuffer newValue = new StringBuffer(templateStr.length());
@@ -59,7 +90,8 @@ public class BuildInParametersUtils {
         return newValue.toString();
     }
 
-    private static String processDefineCodeTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext){
+    private static String processDefineCodeTemplateParse(String templateStr,
+                                                         TaskExecutionContext taskExecutionContext) {
         String processDefineCode = String.valueOf(taskExecutionContext.getProcessDefineCode());
         Pattern pattern = Pattern.compile(PROCESS_DEFINE_CODE_PATTERN, Pattern.CASE_INSENSITIVE);
         StringBuffer newValue = new StringBuffer(templateStr.length());
@@ -71,7 +103,7 @@ public class BuildInParametersUtils {
         return newValue.toString();
     }
 
-    private static String taskInstanceIdTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext){
+    private static String taskInstanceIdTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext) {
         String instanceId = String.valueOf(taskExecutionContext.getTaskInstanceId());
         Pattern pattern = Pattern.compile(TASK_INSTANCE_ID_PATTERN, Pattern.CASE_INSENSITIVE);
         StringBuffer newValue = new StringBuffer(templateStr.length());
@@ -83,7 +115,8 @@ public class BuildInParametersUtils {
         return newValue.toString();
     }
 
-    private static String processInstanceIdTemplateParse(String templateStr, TaskExecutionContext taskExecutionContext){
+    private static String processInstanceIdTemplateParse(String templateStr,
+                                                         TaskExecutionContext taskExecutionContext) {
         String instanceId = String.valueOf(taskExecutionContext.getProcessInstanceId());
         Pattern pattern = Pattern.compile(PROCESS_INSTANCE_ID_PATTERN, Pattern.CASE_INSENSITIVE);
         StringBuffer newValue = new StringBuffer(templateStr.length());
@@ -96,7 +129,7 @@ public class BuildInParametersUtils {
     }
 
     private static String dateTemplateParse(String templateStr, Date date) {
-        if(date == null){
+        if (date == null) {
             return null;
         }
         Pattern pattern = Pattern.compile(DATE_PARSE_PATTERN);

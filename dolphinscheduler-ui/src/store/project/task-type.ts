@@ -81,6 +81,18 @@ export const TASK_TYPES_MAP = {
     alias: 'SeaTunnel',
     helperLinkDisable: true
   },
+  ASSET_BACKUP: {
+    alias: 'ASSET_BACKUP',
+    helperLinkDisable: true
+  },
+  ETL: {
+    alias: 'ETL',
+    helperLinkDisable: true
+  },
+  QUALITY: {
+    alias: 'Quality',
+    helperLinkDisable: true
+  },
   EMR: {
     alias: 'AmazonEMR',
     helperLinkDisable: true

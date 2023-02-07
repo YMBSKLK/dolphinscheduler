@@ -21,6 +21,8 @@ import org.apache.dolphinscheduler.api.dto.PageQueryDto;
 import org.apache.dolphinscheduler.common.enums.TaskExecuteType;
 import org.apache.dolphinscheduler.plugin.task.api.enums.TaskExecutionStatus;
 
+import java.util.List;
+
 import lombok.Data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -67,4 +69,7 @@ public class TaskInstanceQueryRequest extends PageQueryDto {
 
     @Schema(name = "taskExecuteType", example = "EXECUTE-TYPE", defaultValue = "BATCH")
     TaskExecuteType taskExecuteType;
+
+    @Schema(name = "taskTypes")
+    List<String> taskTypes;
 }

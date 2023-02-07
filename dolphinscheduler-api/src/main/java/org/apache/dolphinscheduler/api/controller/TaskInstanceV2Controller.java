@@ -100,8 +100,8 @@ public class TaskInstanceV2Controller extends BaseController {
                 taskInstanceQueryReq.getTaskName(), taskInstanceQueryReq.getExecutorName(),
                 taskInstanceQueryReq.getStartTime(), taskInstanceQueryReq.getEndTime(), searchVal,
                 taskInstanceQueryReq.getStateType(), taskInstanceQueryReq.getHost(),
-                taskInstanceQueryReq.getTaskExecuteType(), taskInstanceQueryReq.getPageNo(),
-                taskInstanceQueryReq.getPageSize());
+                taskInstanceQueryReq.getTaskExecuteType(), taskInstanceQueryReq.getTaskTypes(),
+                taskInstanceQueryReq.getPageNo(), taskInstanceQueryReq.getPageSize());
         return new TaskInstanceListPagingResponse(result);
     }
 

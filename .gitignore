@@ -28,7 +28,7 @@ node_modules
 npm-debug.log
 .vscode
 logs/*
-.mvn/
+.mvn/*
 .www
 t.*
 .factorypath
@@ -51,3 +51,4 @@ dolphinscheduler-common/test
 dolphinscheduler-worker/logs
 dolphinscheduler-master/logs
 dolphinscheduler-api/logs
+.github/

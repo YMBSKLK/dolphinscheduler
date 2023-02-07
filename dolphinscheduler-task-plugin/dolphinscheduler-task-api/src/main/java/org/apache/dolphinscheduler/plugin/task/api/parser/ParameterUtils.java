@@ -96,7 +96,8 @@ public class ParameterUtils {
      * @param parameterMap    parameter map
      * @return convert parameters place holders
      */
-    public static String convertParameterPlaceholders(TaskExecutionContext taskExecutionContext, String parameterString, Map<String, String> parameterMap) {
+    public static String convertParameterPlaceholders(TaskExecutionContext taskExecutionContext, String parameterString,
+                                                      Map<String, String> parameterMap) {
         if (StringUtils.isEmpty(parameterString)) {
             return parameterString;
         }
@@ -114,10 +115,10 @@ public class ParameterUtils {
         }
         return BuildInParametersUtils.buildInParametersTemplateParse(taskExecutionContext, parameterString, cronTime);
         // replace time $[...] form, eg. $[yyyyMMdd]
-//        if (cronTime != null) {
-//            return dateTemplateParse(parameterString, cronTime);
-//        }
-//        return parameterString;
+        // if (cronTime != null) {
+        // return dateTemplateParse(parameterString, cronTime);
+        // }
+        // return parameterString;
     }
 
     /**

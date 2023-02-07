@@ -109,6 +109,7 @@ public class TaskInstanceServiceImpl extends BaseServiceImpl implements TaskInst
      * @param pageSize          page size
      * @return task list page
      */
+    // TODO add query task instance by taskType
     @Override
     public Result queryTaskListPaging(User loginUser,
                                       long projectCode,
@@ -123,6 +124,7 @@ public class TaskInstanceServiceImpl extends BaseServiceImpl implements TaskInst
                                       TaskExecutionStatus stateType,
                                       String host,
                                       TaskExecuteType taskExecuteType,
+                                      List<String> taskTypes,
                                       Integer pageNo,
                                       Integer pageSize) {
         Result result = new Result();
@@ -155,11 +157,11 @@ public class TaskInstanceServiceImpl extends BaseServiceImpl implements TaskInst
             // stream task without process instance
             taskInstanceIPage = taskInstanceMapper.queryStreamTaskInstanceListPaging(
                     page, project.getCode(), processDefinitionName, searchVal, taskName, executorId, statusArray, host,
-                    taskExecuteType, start, end);
+                    taskExecuteType, taskTypes, start, end);
         } else {
             taskInstanceIPage = taskInstanceMapper.queryTaskInstanceListPaging(
                     page, project.getCode(), processInstanceId, processInstanceName, searchVal, taskName, executorId,
-                    statusArray, host, taskExecuteType, start, end);
+                    statusArray, host, taskExecuteType, taskTypes, start, end);
         }
         Set<String> exclusionSet = new HashSet<>();
         exclusionSet.add(Constants.CLASS);

@@ -207,7 +207,12 @@ export function formatParams(data: INodeData): {
     taskParams.method = data.method
   }
 
-  if (data.taskType === 'SEATUNNEL') {
+  if (
+    data.taskType === 'SEATUNNEL' ||
+    data.taskType === 'ETL' ||
+    data.taskType === 'QUALITY' ||
+    data.taskType === 'ASSET_BACKUP'
+  ) {
     taskParams.engine = data.engine
     taskParams.useCustom = data.useCustom
     taskParams.rawScript = data.rawScript

@@ -32,6 +32,8 @@ import org.apache.dolphinscheduler.dao.entity.User;
 import org.apache.dolphinscheduler.plugin.task.api.enums.TaskExecutionStatus;
 import org.apache.dolphinscheduler.plugin.task.api.utils.ParameterUtils;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -109,6 +111,7 @@ public class TaskInstanceController extends BaseController {
                                       @RequestParam(value = "startDate", required = false) String startTime,
                                       @RequestParam(value = "endDate", required = false) String endTime,
                                       @RequestParam(value = "taskExecuteType", required = false, defaultValue = "BATCH") TaskExecuteType taskExecuteType,
+                                      @RequestParam(value = "taskTypes", required = false) List<String> taskTypes,
                                       @RequestParam("pageNo") Integer pageNo,
                                       @RequestParam("pageSize") Integer pageSize) {
         Result result = checkPageParams(pageNo, pageSize);
@@ -118,7 +121,8 @@ public class TaskInstanceController extends BaseController {
         searchVal = ParameterUtils.handleEscapes(searchVal);
         result = taskInstanceService.queryTaskListPaging(loginUser, projectCode, processInstanceId, processInstanceName,
                 processDefinitionName,
-                taskName, executorName, startTime, endTime, searchVal, stateType, host, taskExecuteType, pageNo,
+                taskName, executorName, startTime, endTime, searchVal, stateType, host, taskExecuteType, taskTypes,
+                pageNo,
                 pageSize);
         return result;
     }

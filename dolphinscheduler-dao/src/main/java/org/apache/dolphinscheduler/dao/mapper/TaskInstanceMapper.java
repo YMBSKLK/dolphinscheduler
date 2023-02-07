@@ -91,6 +91,19 @@ public interface TaskInstanceMapper extends BaseMapper<TaskInstance> {
                                                                                        @Param("projectCodes") Long[] projectCodes,
                                                                                        @Param("states") List<TaskExecutionStatus> states);
 
+    // IPage<TaskInstance> queryTaskInstanceListPaging(IPage<TaskInstance> page,
+    // @Param("projectCode") Long projectCode,
+    // @Param("processInstanceId") Integer processInstanceId,
+    // @Param("processInstanceName") String processInstanceName,
+    // @Param("searchVal") String searchVal,
+    // @Param("taskName") String taskName,
+    // @Param("executorId") int executorId,
+    // @Param("states") int[] statusArray,
+    // @Param("host") String host,
+    // @Param("taskExecuteType") TaskExecuteType taskExecuteType,
+    // @Param("startTime") Date startTime,
+    // @Param("endTime") Date endTime);
+
     IPage<TaskInstance> queryTaskInstanceListPaging(IPage<TaskInstance> page,
                                                     @Param("projectCode") Long projectCode,
                                                     @Param("processInstanceId") Integer processInstanceId,
@@ -101,8 +114,21 @@ public interface TaskInstanceMapper extends BaseMapper<TaskInstance> {
                                                     @Param("states") int[] statusArray,
                                                     @Param("host") String host,
                                                     @Param("taskExecuteType") TaskExecuteType taskExecuteType,
+                                                    @Param("taskTypes") List<String> taskTypes,
                                                     @Param("startTime") Date startTime,
                                                     @Param("endTime") Date endTime);
+
+    // IPage<TaskInstance> queryStreamTaskInstanceListPaging(IPage<TaskInstance> page,
+    // @Param("projectCode") Long projectCode,
+    // @Param("processDefinitionName") String processDefinitionName,
+    // @Param("searchVal") String searchVal,
+    // @Param("taskName") String taskName,
+    // @Param("executorId") int executorId,
+    // @Param("states") int[] statusArray,
+    // @Param("host") String host,
+    // @Param("taskExecuteType") TaskExecuteType taskExecuteType,
+    // @Param("startTime") Date startTime,
+    // @Param("endTime") Date endTime);
 
     IPage<TaskInstance> queryStreamTaskInstanceListPaging(IPage<TaskInstance> page,
                                                           @Param("projectCode") Long projectCode,
@@ -113,6 +139,7 @@ public interface TaskInstanceMapper extends BaseMapper<TaskInstance> {
                                                           @Param("states") int[] statusArray,
                                                           @Param("host") String host,
                                                           @Param("taskExecuteType") TaskExecuteType taskExecuteType,
+                                                          @Param("taskTypes") List<String> taskType,
                                                           @Param("startTime") Date startTime,
                                                           @Param("endTime") Date endTime);
 
