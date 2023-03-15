@@ -235,11 +235,15 @@ public class ResourcesController extends BaseController {
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result<Object> queryResourceListPaging(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
                                                   @RequestParam(value = "fullName") String fullName,
-                                                  @RequestParam(value = "tenantCode") String tenantCode,
+                                                  @RequestParam(value = "tenantCode", required = false) String tenantCode,
                                                   @RequestParam(value = "type") ResourceType type,
                                                   @RequestParam("pageNo") Integer pageNo,
                                                   @RequestParam(value = "searchVal", required = false) String searchVal,
                                                   @RequestParam("pageSize") Integer pageSize) {
+        if(StringUtils.isBlank(tenantCode)){
+            tenantCode = loginUser.getTenantCode();
+        }
+
         Result<Object> result = checkPageParams(pageNo, pageSize);
         if (!result.checkResult()) {
             return result;
@@ -383,7 +387,10 @@ public class ResourcesController extends BaseController {
                                @RequestParam(value = "skipLineNum") int skipLineNum,
                                @RequestParam(value = "limit") int limit,
                                @RequestParam(value = "fullName") String fullName,
-                               @RequestParam(value = "tenantCode") String tenantCode) {
+                               @RequestParam(value = "tenantCode", required = false) String tenantCode) {
+        if(StringUtils.isBlank(tenantCode)){
+            tenantCode = loginUser.getTenantCode();
+        }
         return resourceService.readResource(loginUser, fullName, tenantCode, skipLineNum, limit);
     }
 
@@ -437,8 +444,11 @@ public class ResourcesController extends BaseController {
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result updateResourceContent(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
                                         @RequestParam(value = "fullName") String fullName,
-                                        @RequestParam(value = "tenantCode") String tenantCode,
+                                        @RequestParam(value = "tenantCode", required = false) String tenantCode,
                                         @RequestParam(value = "content") String content) {
+        if(StringUtils.isBlank(tenantCode)){
+            tenantCode = loginUser.getTenantCode();
+        }
         if (StringUtils.isEmpty(content)) {
             logger.error("The resource file contents are not allowed to be empty");
             return error(RESOURCE_FILE_IS_EMPTY.getCode(), RESOURCE_FILE_IS_EMPTY.getMsg());
@@ -767,8 +777,10 @@ public class ResourcesController extends BaseController {
     public Result queryResourceByFullName(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
                                           @RequestParam(value = "type") ResourceType type,
                                           @RequestParam(value = "fullName") String fullName,
-                                          @RequestParam(value = "tenantCode") String tenantCode) throws IOException {
-
+                                          @RequestParam(value = "tenantCode", required = false) String tenantCode) throws IOException {
+        if(StringUtils.isBlank(tenantCode)){
+            tenantCode = loginUser.getTenantCode();
+        }
         return resourceService.queryResourceByFullName(loginUser, fullName, tenantCode, type);
     }
 }
