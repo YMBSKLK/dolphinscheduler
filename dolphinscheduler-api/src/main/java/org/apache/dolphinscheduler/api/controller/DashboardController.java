@@ -8,13 +8,12 @@ import org.apache.dolphinscheduler.api.utils.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.Map;
 
 @Tag(name = "DOME_DASHBOARD")
 @RestController
@@ -32,8 +31,8 @@ public class DashboardController extends BaseController {
     @GetMapping(value = "/getWorkflowInstanceCount")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_WORKFLOW_INSTANCE_COUNT_ERROR)
-    public Result getWorkflowInstanceCount() {
-        int result = dashboardService.getWorkflowInstanceCount();
+    public Result getWorkflowInstanceCount(@RequestParam(value = "state", required = false) Integer state) {
+        int result = dashboardService.getWorkflowInstanceCount(state);
         return success(result);
     }
 
@@ -45,8 +44,9 @@ public class DashboardController extends BaseController {
     @GetMapping(value = "/getTaskInstanceCount")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_TASK_INSTANCE_COUNT_ERROR)
-    public Result getTaskInstanceCount() {
-        int result = dashboardService.getTaskInstanceCount();
+    public Result getTaskInstanceCount(@RequestParam(value = "state", required = false) Integer state,
+                                        @RequestParam(value = "projectCode") Long projectCode) {
+        int result = dashboardService.getTaskInstanceCount(state, projectCode);
         return success(result);
     }
 
@@ -58,9 +58,46 @@ public class DashboardController extends BaseController {
     @GetMapping(value = "/getTaskDefinitionCount")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_TASK_DEFINITION_COUNT_ERROR)
-    public Result getTaskDefinitionCount() {
-        int result = dashboardService.getTaskDefinitionCount();
+    public Result getTaskDefinitionCount(@RequestParam("projectCode") Long projectCode) {
+        int result = dashboardService.getTaskDefinitionCount(projectCode);
         return success(result);
+    }
+
+    /**
+     * 工作流定义数量
+     * @return
+     */
+    @Operation(summary = "getWorkflowDefinitionCount", description = "GET_WORKFLOW_DEFINITION_COUNT_NOTES")
+    @GetMapping(value = "/getWorkflowDefinitionCount")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(GET_WORKFLOW_DEFINITION_COUNT_ERROR)
+    public Result getWorkflowDefinitionCount(@RequestParam(value = "releaseState", required = false) Integer releaseState) {
+        int result = dashboardService.getWorkflowDefinitionCount(releaseState);
+        return success(result);
+    }
+
+    /**
+     * 流程失败次数Top5
+     * @return
+     */
+    @Operation(summary = "processFailTop5", description = "GET_WORKFLOW_DEFINITION_COUNT_NOTES")
+    @GetMapping(value = "/processFailTop5")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(GET_WORKFLOW_DEFINITION_COUNT_ERROR)
+    public Result processFailTop5() {
+        return success(dashboardService.processFailTop5());
+    }
+
+    /**
+     * 任务失败次数Top5
+     * @return
+     */
+    @Operation(summary = "taskFailTop5", description = "GET_WORKFLOW_DEFINITION_COUNT_NOTES")
+    @GetMapping(value = "/taskFailTop5")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(GET_WORKFLOW_DEFINITION_COUNT_ERROR)
+    public Result taskFailTop5(@RequestParam(value = "projectCode") Long projectCode) {
+        return success(dashboardService.taskFailTop5(projectCode));
     }
 
 }

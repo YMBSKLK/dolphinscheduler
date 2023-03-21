@@ -19,14 +19,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.apache.dolphinscheduler.dao.mapper.DashboardMapper">
     <select id="getWorkflowInstanceCount" resultType="java.lang.Integer">
-        select count(1) from t_ds_process_instance
+        select count(1)
+        from t_ds_process_instance instance
+        join t_ds_process_definition define ON instance.process_definition_code = define.code
+        where instance.is_sub_process=0
+        <if test="state!=null and state>-1">
+             and instance.state = #{state}
+        </if>
     </select>
 
     <select id="getTaskInstanceCount" resultType="java.lang.Integer">
-        select count(1) from t_ds_task_instance
+        select count(1) from t_ds_task_instance instance
+        left join t_ds_task_definition_log define on define.code=instance.task_code and define.version=instance.task_definition_version
+        where define.project_code = #{projectCode}
+        <if test="state!=null and state>-1">
+            and instance.state = #{state}
+        </if>
     </select>
 
     <select id="getTaskDefinitionCount" resultType="java.lang.Integer">
-        select count(1) from t_ds_task_definition
+        select count(1) from t_ds_task_definition where project_code = #{projectCode}
     </select>
+
+    <select id="getWorkflowDefinitionCount" resultType="java.lang.Integer">
+        select count(1) from t_ds_process_definition where 1=1
+        <if test="releaseState != null and releaseState>-1">
+            and release_state = #{releaseState}
+        </if>
+    </select>
+
+    <select id="processFailTop5" resultType="java.util.Map">
+        SELECT t.process_definition_code, d.name, count(1) as fail
+        from t_ds_process_instance t
+        join t_ds_process_definition d on d.code=t.process_definition_code
+        where t.is_sub_process = 0 and t.state=6 group by t.process_definition_code order by fail desc LIMIT 5
+    </select>
+
+    <select id="taskFailTop5" resultType="java.util.Map">
+        select t.task_code, d.name, count(1) as fail
+        from t_ds_task_instance t
+        join t_ds_task_definition d on d.code = t.task_code
+        left join t_ds_task_definition_log define on define.code=t.task_code and define.version=t.task_definition_version
+        where define.project_code = #{projectCode} and t.state = 6 group by task_code order by fail desc limit 5
+    </select>
+
 </mapper>

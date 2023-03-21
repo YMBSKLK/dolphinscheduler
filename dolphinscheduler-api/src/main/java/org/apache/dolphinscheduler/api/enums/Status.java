@@ -520,7 +520,9 @@ public enum Status {
 
     GET_TASK_INSTANCE_COUNT_ERROR(9000002, "", ""),
 
-    GET_TASK_DEFINITION_COUNT_ERROR(9000003, "", "");
+    GET_TASK_DEFINITION_COUNT_ERROR(9000003, "", ""),
+
+    GET_WORKFLOW_DEFINITION_COUNT_ERROR(9000004, "", "");
     private final int code;
     private final String enMsg;
     private final String zhMsg;
