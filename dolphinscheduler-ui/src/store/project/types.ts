@@ -41,6 +41,7 @@ type TaskType =
   | 'ETL'
   | 'QUALITY'
   | 'ASSET_BACKUP'
+  | 'ASSET_ARCHIVE'
   | 'EMR'
   | 'ZEPPELIN'
   | 'K8S'

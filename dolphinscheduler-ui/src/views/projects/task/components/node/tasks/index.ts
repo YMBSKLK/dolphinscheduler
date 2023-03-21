@@ -67,6 +67,7 @@ export default {
   ETL: useSeaTunnel,
   QUALITY: useSeaTunnel,
   ASSET_BACKUP: useSeaTunnel,
+  ASSET_ARCHIVE: useSeaTunnel,
   SWITCH: useSwitch,
   CONDITIONS: useConditions,
   DATAX: useDataX,

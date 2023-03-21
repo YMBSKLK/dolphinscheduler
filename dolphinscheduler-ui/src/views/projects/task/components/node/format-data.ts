@@ -211,7 +211,8 @@ export function formatParams(data: INodeData): {
     data.taskType === 'SEATUNNEL' ||
     data.taskType === 'ETL' ||
     data.taskType === 'QUALITY' ||
-    data.taskType === 'ASSET_BACKUP'
+    data.taskType === 'ASSET_BACKUP' ||
+    data.taskType === 'ASSET_ARCHIVE'
   ) {
     taskParams.engine = data.engine
     taskParams.useCustom = data.useCustom

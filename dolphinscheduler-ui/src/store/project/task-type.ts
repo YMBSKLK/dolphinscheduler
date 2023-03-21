@@ -85,6 +85,10 @@ export const TASK_TYPES_MAP = {
     alias: 'ASSET_BACKUP',
     helperLinkDisable: true
   },
+  ASSET_ARCHIVE: {
+    alias: 'ASSET_ARCHIVE',
+    helperLinkDisable: true
+  },
   ETL: {
     alias: 'ETL',
     helperLinkDisable: true

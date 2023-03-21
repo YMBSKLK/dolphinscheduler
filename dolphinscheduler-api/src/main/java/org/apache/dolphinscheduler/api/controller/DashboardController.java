@@ -24,6 +24,10 @@ public class DashboardController extends BaseController {
     @Autowired
     private DashboardService dashboardService;
 
+    /**
+     * 工作流实例数量
+     * @return
+     */
     @Operation(summary = "getWorkflowInstanceCount", description = "GET_WORKFLOW_INSTANCE_COUNT_NOTES")
     @GetMapping(value = "/getWorkflowInstanceCount")
     @ResponseStatus(HttpStatus.OK)
@@ -33,6 +37,10 @@ public class DashboardController extends BaseController {
         return success(result);
     }
 
+    /**
+     * 任务实例数量
+     * @return
+     */
     @Operation(summary = "getTaskInstanceCount", description = "GET_TASK_INSTANCE_COUNT_NOTES")
     @GetMapping(value = "/getTaskInstanceCount")
     @ResponseStatus(HttpStatus.OK)
@@ -42,6 +50,10 @@ public class DashboardController extends BaseController {
         return success(result);
     }
 
+    /**
+     * 任务定义数量
+     * @return
+     */
     @Operation(summary = "getTaskDefinitionCount", description = "GET_TASK_DEFINITION_COUNT_NOTES")
     @GetMapping(value = "/getTaskDefinitionCount")
     @ResponseStatus(HttpStatus.OK)
