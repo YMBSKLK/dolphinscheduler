@@ -51,6 +51,7 @@ import org.apache.dolphinscheduler.plugin.task.api.utils.ParameterUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -511,6 +512,7 @@ public class ProcessDefinitionController extends BaseController {
                                                                                 @RequestParam(value = "searchVal", required = false) String searchVal,
                                                                                 @RequestParam(value = "otherParamsJson", required = false) String otherParamsJson,
                                                                                 @RequestParam(value = "userId", required = false, defaultValue = "0") Integer userId,
+                                                                                @RequestParam(value = "taskTypes", required = false) List<String> taskTypes,
                                                                                 @RequestParam("pageNo") Integer pageNo,
                                                                                 @RequestParam("pageSize") Integer pageSize) {
 
@@ -521,7 +523,7 @@ public class ProcessDefinitionController extends BaseController {
         searchVal = ParameterUtils.handleEscapes(searchVal);
 
         PageInfo<ProcessDefinition> pageInfo = processDefinitionService.queryProcessDefinitionListPaging(
-                loginUser, projectCode, searchVal, otherParamsJson, userId, pageNo, pageSize);
+                loginUser, projectCode, searchVal, otherParamsJson, userId, pageNo, pageSize, taskTypes);
         return Result.success(pageInfo);
 
     }

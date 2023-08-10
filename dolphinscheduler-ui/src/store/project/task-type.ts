@@ -57,6 +57,15 @@ export const TASK_TYPES_MAP = {
   HTTP: {
     alias: 'HTTP'
   },
+  HTTP_ASSET_BACKUP: {
+    alias: 'HTTP_ASSET_BACKUP'
+  },
+  HTTP_ASSET_ARCHIVE: {
+    alias: 'HTTP_ASSET_ARCHIVE'
+  },
+  HTTP_ASSET_RECOVERY: {
+    alias: 'HTTP_ASSET_RECOVERY'
+  },
   DATAX: {
     alias: 'DataX'
   },
@@ -87,6 +96,10 @@ export const TASK_TYPES_MAP = {
   },
   ASSET_ARCHIVE: {
     alias: 'ASSET_ARCHIVE',
+    helperLinkDisable: true
+  },
+  ASSET_RECOVERY: {
+    alias: 'ASSET_RECOVERY',
     helperLinkDisable: true
   },
   ETL: {

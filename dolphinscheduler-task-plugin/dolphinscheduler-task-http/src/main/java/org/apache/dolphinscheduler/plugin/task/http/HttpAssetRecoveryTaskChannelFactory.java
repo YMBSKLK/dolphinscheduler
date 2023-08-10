@@ -15,21 +15,31 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.plugin.task.seatunnel;
+package org.apache.dolphinscheduler.plugin.task.http;
 
-public enum EngineEnum {
+import org.apache.dolphinscheduler.plugin.task.api.TaskChannel;
+import org.apache.dolphinscheduler.plugin.task.api.TaskChannelFactory;
+import org.apache.dolphinscheduler.spi.params.base.PluginParams;
 
-    ZETA("${SEATUNNEL_HOME}/bin/seatunnel.sh"),
-    FLINK("${SEATUNNEL_HOME}/bin/start-seatunnel-flink.sh"),
-    SPARK("${SEATUNNEL_HOME}/bin/start-seatunnel-spark.sh");
+import java.util.List;
 
-    private String command;
+import com.google.auto.service.AutoService;
 
-    EngineEnum(String command) {
-        this.command = command;
+@AutoService(TaskChannelFactory.class)
+public class HttpAssetRecoveryTaskChannelFactory implements TaskChannelFactory {
+
+    @Override
+    public String getName() {
+        return "HTTP_ASSET_RECOVERY";
     }
 
-    public String getCommand() {
-        return command;
+    @Override
+    public List<PluginParams> getParams() {
+        return null;
+    }
+
+    @Override
+    public TaskChannel create() {
+        return new HttpTaskChannel();
     }
 }

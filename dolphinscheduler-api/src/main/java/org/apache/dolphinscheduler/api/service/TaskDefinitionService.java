@@ -27,6 +27,7 @@ import org.apache.dolphinscheduler.common.enums.TaskExecuteType;
 import org.apache.dolphinscheduler.dao.entity.TaskDefinition;
 import org.apache.dolphinscheduler.dao.entity.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -231,6 +232,7 @@ public interface TaskDefinitionService {
                                          String searchTaskName,
                                          String taskType,
                                          TaskExecuteType taskExecuteType,
+                                         List<String> taskTypes,
                                          Integer pageNo,
                                          Integer pageSize);
 

@@ -41,6 +41,7 @@ import org.apache.dolphinscheduler.plugin.task.api.utils.ParameterUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -353,6 +354,7 @@ public class TaskDefinitionController extends BaseController {
                                                 @RequestParam(value = "searchTaskName", required = false) String searchTaskName,
                                                 @RequestParam(value = "taskType", required = false) String taskType,
                                                 @RequestParam(value = "taskExecuteType", required = false) TaskExecuteType taskExecuteType,
+                                                @RequestParam(value = "taskTypes", required = false) List<String> taskTypes,
                                                 @RequestParam("pageNo") Integer pageNo,
                                                 @RequestParam("pageSize") Integer pageSize) {
         Result result = checkPageParams(pageNo, pageSize);
@@ -362,7 +364,7 @@ public class TaskDefinitionController extends BaseController {
         searchWorkflowName = ParameterUtils.handleEscapes(searchWorkflowName);
         searchTaskName = ParameterUtils.handleEscapes(searchTaskName);
         return taskDefinitionService.queryTaskDefinitionListPaging(loginUser, projectCode, searchWorkflowName,
-                searchTaskName, taskType, taskExecuteType, pageNo, pageSize);
+                searchTaskName, taskType, taskExecuteType, taskTypes, pageNo, pageSize);
     }
 
     /**

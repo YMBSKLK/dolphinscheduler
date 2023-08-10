@@ -1049,6 +1049,7 @@ public class TaskDefinitionServiceImpl extends BaseServiceImpl implements TaskDe
                                                 String searchTaskName,
                                                 String taskType,
                                                 TaskExecuteType taskExecuteType,
+                                                List<String> taskTypes,
                                                 Integer pageNo,
                                                 Integer pageSize) {
         Result result = new Result();
@@ -1065,7 +1066,7 @@ public class TaskDefinitionServiceImpl extends BaseServiceImpl implements TaskDe
         Page<TaskMainInfo> page = new Page<>(pageNo, pageSize);
         IPage<TaskMainInfo> taskMainInfoIPage =
                 taskDefinitionMapper.queryDefineListPaging(page, projectCode, searchWorkflowName,
-                        searchTaskName, taskType, taskExecuteType);
+                        searchTaskName, taskType, taskTypes, taskExecuteType);
         List<TaskMainInfo> records = taskMainInfoIPage.getRecords();
         if (CollectionUtils.isNotEmpty(records)) {
             Map<Long, TaskMainInfo> taskMainInfoMap = new HashMap<>();

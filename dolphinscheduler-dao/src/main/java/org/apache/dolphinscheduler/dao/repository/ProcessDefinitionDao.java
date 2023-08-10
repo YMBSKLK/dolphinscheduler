@@ -38,7 +38,7 @@ public interface ProcessDefinitionDao {
                                                                   int pageSize,
                                                                   @Nullable String searchVal,
                                                                   int userId,
-                                                                  long projectCode);
+                                                                  long projectCode, List<String> taskTypes);
 
     /**
      * query process definitions by definition codes and versions

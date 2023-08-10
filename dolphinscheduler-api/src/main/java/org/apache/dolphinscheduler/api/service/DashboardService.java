@@ -15,7 +15,6 @@ public interface DashboardService {
 
     List<Map<String, Object>> processFailTop5();
 
-
     List<Map<String, Object>> taskFailTop5(Long projectCode);
 
 }

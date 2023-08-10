@@ -232,7 +232,7 @@ public class ProcessDefinitionServiceTest extends BaseServiceTestTool {
             Mockito.when(projectMapper.queryByCode(projectCode)).thenReturn(null);
             Mockito.doThrow(new ServiceException(Status.PROJECT_NOT_EXIST)).when(projectService)
                     .checkProjectAndAuthThrowException(user, null, WORKFLOW_DEFINITION);
-            processDefinitionService.queryProcessDefinitionListPaging(user, projectCode, "", "", 1, 5, 0);
+            processDefinitionService.queryProcessDefinitionListPaging(user, projectCode, "", "", 1, 5, 0, null);
         } catch (ServiceException serviceException) {
             Assertions.assertEquals(Status.PROJECT_NOT_EXIST.getCode(), serviceException.getCode());
         }
@@ -254,10 +254,10 @@ public class ProcessDefinitionServiceTest extends BaseServiceTestTool {
                 Mockito.eq(10),
                 Mockito.eq(""),
                 Mockito.eq(1),
-                Mockito.eq(project.getCode()))).thenReturn(pageListingResult);
+                Mockito.eq(project.getCode()), null)).thenReturn(pageListingResult);
 
         PageInfo<ProcessDefinition> pageInfo = processDefinitionService.queryProcessDefinitionListPaging(
-                user, project.getCode(), "", "", 1, 0, 10);
+                user, project.getCode(), "", "", 1, 0, 10, null);
 
         Assertions.assertNotNull(pageInfo);
     }

@@ -21,6 +21,7 @@ import org.apache.dolphinscheduler.plugin.task.api.model.ResourceInfo;
 import org.apache.dolphinscheduler.plugin.task.api.parameters.AbstractParameters;
 import org.apache.dolphinscheduler.plugin.task.seatunnel.flink.SeatunnelFlinkParameters;
 import org.apache.dolphinscheduler.plugin.task.seatunnel.spark.SeatunnelSparkParameters;
+import org.apache.dolphinscheduler.plugin.task.seatunnel.zeta.SeatunnelZetaParameters;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -35,7 +36,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true, property = "engine")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = SeatunnelFlinkParameters.class, name = "FLINK"),
-        @JsonSubTypes.Type(value = SeatunnelSparkParameters.class, name = "SPARK")
+        @JsonSubTypes.Type(value = SeatunnelSparkParameters.class, name = "SPARK"),
+        @JsonSubTypes.Type(value = SeatunnelZetaParameters.class, name = "ZETA"),
 })
 public class SeatunnelParameters extends AbstractParameters {
 

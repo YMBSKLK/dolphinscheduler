@@ -115,6 +115,7 @@ public class ProcessInstanceController extends BaseController {
                                            @RequestParam(value = "startDate", required = false) String startTime,
                                            @RequestParam(value = "endDate", required = false) String endTime,
                                            @RequestParam(value = "otherParamsJson", required = false) String otherParamsJson,
+                                           @RequestParam(value = "taskTypes", required = false) List<String> taskTypes,
                                            @RequestParam("pageNo") Integer pageNo,
                                            @RequestParam("pageSize") Integer pageSize) {
 
@@ -125,7 +126,7 @@ public class ProcessInstanceController extends BaseController {
         searchVal = ParameterUtils.handleEscapes(searchVal);
         result = processInstanceService.queryProcessInstanceList(loginUser, projectCode, processDefineCode, startTime,
                 endTime,
-                searchVal, executorName, stateType, host, otherParamsJson, pageNo, pageSize);
+                searchVal, executorName, stateType, host, otherParamsJson, taskTypes, pageNo, pageSize);
         return result;
     }
 

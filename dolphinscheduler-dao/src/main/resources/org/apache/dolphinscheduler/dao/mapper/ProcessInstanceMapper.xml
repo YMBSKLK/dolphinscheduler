@@ -114,6 +114,18 @@
         restart_time, instance.state_history
         from t_ds_process_instance instance
         join t_ds_process_definition define ON instance.process_definition_code = define.code
+        <if test="taskTypes != null and taskTypes.size() >0">
+            join (
+                SELECT relation.process_definition_code, relation.process_definition_version, count(1) num FROM t_ds_process_task_relation relation
+                join t_ds_task_definition td on td.code = relation.pre_task_code or td.code = relation.post_task_code
+                where td.task_type in
+                <foreach collection="taskTypes" index="index" item="i" open="(" separator="," close=")">
+                    #{i}
+                </foreach>
+                group by relation.process_definition_code, relation.process_definition_version
+                ) as t1
+                on t1.process_definition_code = instance.process_definition_code and t1.process_definition_version = instance.process_definition_version
+        </if>
         where instance.is_sub_process=0
         and define.project_code = #{projectCode}
         <if test="processDefinitionCode != 0">

@@ -188,6 +188,7 @@ public class ProcessInstanceMapperTest extends BaseDaoTest {
                 stateArray,
                 processInstance.getHost(),
                 null,
+                null,
                 null);
         Assertions.assertNotEquals(processInstanceIPage.getTotal(), 0);
 

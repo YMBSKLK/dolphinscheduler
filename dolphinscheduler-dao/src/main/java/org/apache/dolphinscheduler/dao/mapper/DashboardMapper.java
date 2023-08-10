@@ -1,10 +1,11 @@
 package org.apache.dolphinscheduler.dao.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 public interface DashboardMapper extends BaseMapper {
 
@@ -19,6 +20,5 @@ public interface DashboardMapper extends BaseMapper {
     List<Map<String, Object>> processFailTop5();
 
     List<Map<String, Object>> taskFailTop5(@Param("projectCode") Long projectCode);
-
 
 }

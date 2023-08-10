@@ -70,18 +70,30 @@
     <select id="queryDefineListPaging" resultType="org.apache.dolphinscheduler.dao.entity.ProcessDefinition">
         SELECT
         <include refid="baseSql"/>
-        FROM t_ds_process_definition
-        where project_code = #{projectCode}
-        AND project_code = #{projectCode}
+        FROM t_ds_process_definition definition
+        <if test="taskTypes != null and taskTypes.size() >0">
+            join (
+            SELECT relation.process_definition_code, relation.process_definition_version, count(1) num FROM t_ds_process_task_relation relation
+            join t_ds_task_definition td on td.code = relation.pre_task_code or td.code = relation.post_task_code
+            where td.task_type in
+            <foreach collection="taskTypes" index="index" item="i" open="(" separator="," close=")">
+                #{i}
+            </foreach>
+            group by relation.process_definition_code, relation.process_definition_version
+            ) as t1
+            on t1.process_definition_code = definition.code and t1.process_definition_version = definition.version
+        </if>
+        where definition.project_code = #{projectCode}
+        AND definition.project_code = #{projectCode}
         <if test=" userId != 0">
-            AND user_id = #{userId}
+            AND definition.user_id = #{userId}
         </if>
         <if test=" searchVal != null and searchVal != ''">
             AND (
-                name like concat('%', #{searchVal}, '%') OR description like concat('%', #{searchVal}, '%')
+            definition.name like concat('%', #{searchVal}, '%') OR definition.description like concat('%', #{searchVal}, '%')
                 )
         </if>
-        order by update_time desc
+        order by definition.update_time desc
     </select>
     <select id="filterProcessDefinition"
             parameterType="org.apache.dolphinscheduler.dao.entity.ProcessDefinition"

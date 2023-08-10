@@ -77,7 +77,12 @@ export function formatParams(data: INodeData): {
     taskParams.taskManager = data.taskManager
     taskParams.parallelism = data.parallelism
   }
-  if (data.taskType === 'HTTP') {
+  if (
+    data.taskType === 'HTTP' ||
+    data.taskType === 'HTTP_ASSET_BACKUP' ||
+    data.taskType === 'HTTP_ASSET_ARCHIVE' ||
+    data.taskType === 'HTTP_ASSET_RECOVERY'
+  ) {
     taskParams.httpMethod = data.httpMethod
     taskParams.httpCheckCondition = data.httpCheckCondition
     taskParams.httpParams = data.httpParams
@@ -212,7 +217,8 @@ export function formatParams(data: INodeData): {
     data.taskType === 'ETL' ||
     data.taskType === 'QUALITY' ||
     data.taskType === 'ASSET_BACKUP' ||
-    data.taskType === 'ASSET_ARCHIVE'
+    data.taskType === 'ASSET_ARCHIVE' ||
+    data.taskType === 'ASSET_RECOVERY'
   ) {
     taskParams.engine = data.engine
     taskParams.useCustom = data.useCustom

@@ -129,6 +129,12 @@
         <if test="searchTaskName != null and searchTaskName != ''">
             and td.name like concat('%', #{searchTaskName}, '%')
         </if>
+        <if test="taskTypes != null and taskTypes.size() >0">
+            and td.task_type in
+            <foreach collection="taskTypes" index="index" item="i" open="(" separator="," close=")">
+                #{i}
+            </foreach>
+        </if>
         order by td.update_time desc
     </select>
     <select id="queryByCodeList" resultType="org.apache.dolphinscheduler.dao.entity.TaskDefinition">

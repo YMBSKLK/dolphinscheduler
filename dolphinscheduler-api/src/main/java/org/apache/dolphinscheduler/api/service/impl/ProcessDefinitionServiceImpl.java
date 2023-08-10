@@ -17,6 +17,7 @@
 
 package org.apache.dolphinscheduler.api.service.impl;
 
+import static java.util.stream.Collectors.groupingBy;
 import static org.apache.dolphinscheduler.api.constants.ApiFuncIdentificationConstant.TASK_DEFINITION_MOVE;
 import static org.apache.dolphinscheduler.api.constants.ApiFuncIdentificationConstant.VERSION_DELETE;
 import static org.apache.dolphinscheduler.api.constants.ApiFuncIdentificationConstant.VERSION_LIST;
@@ -142,7 +143,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -575,7 +575,7 @@ public class ProcessDefinitionServiceImpl extends BaseServiceImpl implements Pro
                                                                         String otherParamsJson,
                                                                         Integer userId,
                                                                         Integer pageNo,
-                                                                        Integer pageSize) {
+                                                                        Integer pageSize, List<String> taskTypes) {
         Project project = projectMapper.queryByCode(projectCode);
 
         // check user access for project
@@ -583,14 +583,16 @@ public class ProcessDefinitionServiceImpl extends BaseServiceImpl implements Pro
 
         PageListingResult<ProcessDefinition> processDefinitionsPageListingResult =
                 processDefinitionDao.listingProcessDefinition(
-                        pageNo, pageSize, searchVal, userId, projectCode);
+                        pageNo, pageSize, searchVal, userId, projectCode, taskTypes);
         List<ProcessDefinition> processDefinitions = processDefinitionsPageListingResult.getRecords();
 
         List<Long> processDefinitionCodes =
                 processDefinitions.stream().map(ProcessDefinition::getCode).collect(Collectors.toList());
-        Map<Long, Schedule> scheduleMap = schedulerService.queryScheduleByProcessDefinitionCodes(processDefinitionCodes)
-                .stream()
-                .collect(Collectors.toMap(Schedule::getProcessDefinitionCode, Function.identity()));
+        Map<Long, List<Schedule>> scheduleMap =
+                schedulerService.queryScheduleByProcessDefinitionCodes(processDefinitionCodes)
+                        .stream()
+                        .collect(groupingBy(Schedule::getProcessDefinitionCode));
+        // .collect(Collectors.toMap(Schedule::getProcessDefinitionCode, Function.identity()));
 
         for (ProcessDefinition pd : processDefinitions) {
             // todo: use batch query
@@ -598,8 +600,20 @@ public class ProcessDefinitionServiceImpl extends BaseServiceImpl implements Pro
                     processDefinitionLogMapper.queryByDefinitionCodeAndVersion(pd.getCode(), pd.getVersion());
             User user = userMapper.selectById(processDefinitionLog.getOperator());
             pd.setModifyBy(user.getUserName());
-            Schedule schedule = scheduleMap.get(pd.getCode());
-            pd.setScheduleReleaseState(schedule == null ? null : schedule.getReleaseState());
+            List<Schedule> schedules = scheduleMap.get(pd.getCode());
+            if (CollectionUtils.isNotEmpty(schedules)) {
+                for (Schedule schedule : schedules) {
+                    pd.setScheduleReleaseState(schedule.getReleaseState());
+                    if (schedule.getReleaseState().name().equals(ReleaseState.ONLINE.name())) {
+                        break;
+                    }
+                }
+            } else {
+                pd.setScheduleReleaseState(null);
+            }
+
+            // Schedule schedule = scheduleMap.get(pd.getCode());
+            // pd.setScheduleReleaseState(schedule == null ? null : schedule.getReleaseState());
         }
 
         PageInfo<ProcessDefinition> pageInfo = new PageInfo<>(pageNo, pageSize);
@@ -1169,17 +1183,20 @@ public class ProcessDefinitionServiceImpl extends BaseServiceImpl implements Pro
                         // set status
                         schedule.setReleaseState(releaseState);
                         int updateSchedule = scheduleMapper.updateById(schedule);
-                        if (updateSchedule == 0) {
-                            logger.error(
-                                    "Set schedule offline error, projectCode:{}, processDefinitionCode:{}, scheduleId:{}",
-                                    projectCode, code, schedule.getId());
-                            putMsg(result, Status.OFFLINE_SCHEDULE_ERROR);
-                            throw new ServiceException(Status.OFFLINE_SCHEDULE_ERROR);
-                        } else {
-                            logger.info("Set schedule offline, projectCode:{}, processDefinitionCode:{}, scheduleId:{}",
-                                    projectCode, code, schedule.getId());
+                        // if (updateSchedule == 0) {
+                        // logger.error(
+                        // "Set schedule offline error, projectCode:{}, processDefinitionCode:{}, scheduleId:{}",
+                        // projectCode, code, schedule.getId());
+                        // putMsg(result, Status.OFFLINE_SCHEDULE_ERROR);
+                        // throw new ServiceException(Status.OFFLINE_SCHEDULE_ERROR);
+                        // } else {
+                        // logger.info("Set schedule offline, projectCode:{}, processDefinitionCode:{}, scheduleId:{}",
+                        // projectCode, code, schedule.getId());
+                        // }
+                        if (updateSchedule > 0) {
+                            schedulerService.deleteSchedule(project.getId(), schedule.getId());
                         }
-                        schedulerService.deleteSchedule(project.getId(), schedule.getId());
+
                     }
                 }
                 break;

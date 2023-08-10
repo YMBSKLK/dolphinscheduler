@@ -46,10 +46,11 @@ public class ProcessDefinitionDaoImpl implements ProcessDefinitionDao {
 
     @Override
     public PageListingResult<ProcessDefinition> listingProcessDefinition(int pageNumber, int pageSize, String searchVal,
-                                                                         int userId, long projectCode) {
+                                                                         int userId, long projectCode,
+                                                                         List<String> taskTypes) {
         Page<ProcessDefinition> page = new Page<>(pageNumber, pageSize);
         IPage<ProcessDefinition> processDefinitions =
-                processDefinitionMapper.queryDefineListPaging(page, searchVal, userId, projectCode);
+                processDefinitionMapper.queryDefineListPaging(page, searchVal, userId, projectCode, taskTypes);
 
         return PageListingResult.<ProcessDefinition>builder()
                 .totalCount(processDefinitions.getTotal())

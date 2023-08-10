@@ -17,19 +17,29 @@
 
 package org.apache.dolphinscheduler.plugin.task.seatunnel;
 
-public enum EngineEnum {
+import org.apache.dolphinscheduler.plugin.task.api.TaskChannel;
+import org.apache.dolphinscheduler.plugin.task.api.TaskChannelFactory;
+import org.apache.dolphinscheduler.spi.params.base.PluginParams;
 
-    ZETA("${SEATUNNEL_HOME}/bin/seatunnel.sh"),
-    FLINK("${SEATUNNEL_HOME}/bin/start-seatunnel-flink.sh"),
-    SPARK("${SEATUNNEL_HOME}/bin/start-seatunnel-spark.sh");
+import java.util.List;
 
-    private String command;
+import com.google.auto.service.AutoService;
 
-    EngineEnum(String command) {
-        this.command = command;
+@AutoService(TaskChannelFactory.class)
+public class AssetRecoveryTaskChannelFactory implements TaskChannelFactory {
+
+    @Override
+    public TaskChannel create() {
+        return new SeatunnelTaskChannel();
     }
 
-    public String getCommand() {
-        return command;
+    @Override
+    public String getName() {
+        return "ASSET_RECOVERY";
+    }
+
+    @Override
+    public List<PluginParams> getParams() {
+        return null;
     }
 }

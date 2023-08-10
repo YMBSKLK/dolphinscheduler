@@ -3,11 +3,11 @@ package org.apache.dolphinscheduler.api.service.impl;
 import org.apache.dolphinscheduler.api.service.DashboardService;
 import org.apache.dolphinscheduler.dao.mapper.DashboardMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DashboardServiceImpl extends BaseServiceImpl implements DashboardService {
@@ -21,7 +21,7 @@ public class DashboardServiceImpl extends BaseServiceImpl implements DashboardSe
     }
 
     @Override
-    public int getTaskInstanceCount(Integer state, Long projectCode)  {
+    public int getTaskInstanceCount(Integer state, Long projectCode) {
         return dashboardMapper.getTaskInstanceCount(projectCode, state);
     }
 
@@ -41,7 +41,7 @@ public class DashboardServiceImpl extends BaseServiceImpl implements DashboardSe
     }
 
     @Override
-    public List<Map<String, Object>> taskFailTop5( Long projectCode) {
+    public List<Map<String, Object>> taskFailTop5(Long projectCode) {
         return dashboardMapper.taskFailTop5(projectCode);
     }
 

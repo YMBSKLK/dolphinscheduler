@@ -81,6 +81,7 @@ public interface ProcessInstanceService {
                                     WorkflowExecutionStatus stateType,
                                     String host,
                                     String otherParamsJson,
+                                    List<String> taskTypes,
                                     Integer pageNo,
                                     Integer pageSize);
 

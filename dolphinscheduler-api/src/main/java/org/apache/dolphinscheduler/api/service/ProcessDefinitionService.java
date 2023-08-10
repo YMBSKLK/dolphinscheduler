@@ -117,7 +117,7 @@ public interface ProcessDefinitionService {
                                                                  String otherParamsJson,
                                                                  Integer userId,
                                                                  Integer pageNo,
-                                                                 Integer pageSize);
+                                                                 Integer pageSize, List<String> taskTypes);
 
     /**
      * Filter resource process definitions

@@ -122,6 +122,7 @@ public interface TaskDefinitionMapper extends BaseMapper<TaskDefinition> {
                                               @Param("searchWorkflowName") String searchWorkflowName,
                                               @Param("searchTaskName") String searchTaskName,
                                               @Param("taskType") String taskType,
+                                              @Param("taskTypes") List<String> taskTypes,
                                               @Param("taskExecuteType") TaskExecuteType taskExecuteType);
 
     /**
