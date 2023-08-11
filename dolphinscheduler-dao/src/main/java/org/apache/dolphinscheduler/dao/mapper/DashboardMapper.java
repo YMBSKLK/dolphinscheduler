@@ -17,7 +17,7 @@ public interface DashboardMapper extends BaseMapper {
 
     int getWorkflowDefinitionCount(Integer releaseState);
 
-    List<Map<String, Object>> processFailTop5();
+    List<Map<String, Object>> processFailTop5(@Param("projectCode") Long projectCode);
 
     List<Map<String, Object>> taskFailTop5(@Param("projectCode") Long projectCode);
 

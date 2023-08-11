@@ -36,8 +36,8 @@ public class DashboardServiceImpl extends BaseServiceImpl implements DashboardSe
     }
 
     @Override
-    public List<Map<String, Object>> processFailTop5() {
-        return dashboardMapper.processFailTop5();
+    public List<Map<String, Object>> processFailTop5(Long projectCode) {
+        return dashboardMapper.processFailTop5(projectCode);
     }
 
     @Override

@@ -49,18 +49,18 @@
     </select>
 
     <select id="processFailTop5" resultType="java.util.Map">
-        SELECT t.process_definition_code, d.name, count(1) as fail
+        SELECT t.process_definition_code, d.name, count(1) as fail, max(t.restart_time) restart_time
         from t_ds_process_instance t
         join t_ds_process_definition d on d.code=t.process_definition_code
-        where t.is_sub_process = 0 and t.state=6 group by t.process_definition_code order by fail desc LIMIT 5
+        where d.project_code = #{projectCode} and t.is_sub_process = 0 and t.state=6 group by t.process_definition_code, d.name order by fail desc, restart_time desc LIMIT 5
     </select>
 
     <select id="taskFailTop5" resultType="java.util.Map">
-        select t.task_code, d.name, count(1) as fail
+        select t.task_code, d.name, count(1) as fail, max(t.start_time) start_time
         from t_ds_task_instance t
         join t_ds_task_definition d on d.code = t.task_code
         left join t_ds_task_definition_log define on define.code=t.task_code and define.version=t.task_definition_version
-        where define.project_code = #{projectCode} and t.state = 6 group by task_code order by fail desc limit 5
+        where define.project_code = #{projectCode} and t.state = 6 group by t.task_code, d.name order by fail desc, start_time desc limit 5
     </select>
 
 </mapper>

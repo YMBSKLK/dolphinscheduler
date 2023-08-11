@@ -86,8 +86,8 @@ public class DashboardController extends BaseController {
     @GetMapping(value = "/processFailTop5")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_WORKFLOW_DEFINITION_COUNT_ERROR)
-    public Result processFailTop5() {
-        return success(dashboardService.processFailTop5());
+    public Result processFailTop5(@RequestParam(value = "projectCode") Long projectCode) {
+        return success(dashboardService.processFailTop5(projectCode));
     }
 
     /**

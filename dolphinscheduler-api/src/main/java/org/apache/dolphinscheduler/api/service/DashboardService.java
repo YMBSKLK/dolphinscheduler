@@ -13,8 +13,7 @@ public interface DashboardService {
 
     int getWorkflowDefinitionCount(Integer releaseState);
 
-    List<Map<String, Object>> processFailTop5();
-
+    List<Map<String, Object>> processFailTop5(Long projectCode);
     List<Map<String, Object>> taskFailTop5(Long projectCode);
 
 }
