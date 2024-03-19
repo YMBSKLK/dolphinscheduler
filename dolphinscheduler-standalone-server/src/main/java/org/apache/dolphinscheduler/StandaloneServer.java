@@ -19,7 +19,9 @@ package org.apache.dolphinscheduler;
 
 import org.apache.curator.test.TestingServer;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import lombok.NonNull;
 
@@ -40,7 +42,15 @@ public class StandaloneServer implements ApplicationListener<ApplicationEvent> {
     private static TestingServer zookeeperServer;
 
     public static void main(String[] args) throws Exception {
-        zookeeperServer = new TestingServer(true);
+        int zkPort = Integer.parseInt(System.getProperty("zkPort", "-1"));
+        String zkTmpDir = System.getProperty("zkTmpDir", null);
+        if (Objects.nonNull(zkTmpDir)) {
+            File zkTmpDirFile = new File(zkTmpDir);
+            zookeeperServer = new TestingServer(zkPort, zkTmpDirFile);
+        } else {
+            zookeeperServer = new TestingServer(zkPort);
+        }
+
         System.setProperty("registry.zookeeper.connect-string", zookeeperServer.getConnectString());
         SpringApplication.run(StandaloneServer.class, args);
     }

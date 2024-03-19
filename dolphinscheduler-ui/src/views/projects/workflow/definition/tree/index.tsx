@@ -119,6 +119,11 @@ export default defineComponent({
         image: `${import.meta.env.BASE_URL}images/task-icons/http.png`
       },
       {
+        taskType: 'HTTP_ASSESS_EXECUTE',
+        color: '#7f3903',
+        image: `${import.meta.env.BASE_URL}images/task-icons/http.png`
+      },
+      {
         taskType: 'DATAX',
         color: '#75CC71',
         image: `${import.meta.env.BASE_URL}images/task-icons/datax.png`

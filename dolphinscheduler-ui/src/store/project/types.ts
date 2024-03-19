@@ -34,6 +34,7 @@ type TaskType =
   | 'HTTP_ASSET_BACKUP'
   | 'HTTP_ASSET_ARCHIVE'
   | 'HTTP_ASSET_RECOVERY'
+  | 'HTTP_ASSESS_EXECUTE'
   | 'DATAX'
   | 'PIGEON'
   | 'SQOOP'

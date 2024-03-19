@@ -66,6 +66,9 @@ export const TASK_TYPES_MAP = {
   HTTP_ASSET_RECOVERY: {
     alias: 'HTTP_ASSET_RECOVERY'
   },
+  HTTP_ASSESS_EXECUTE: {
+    alias: 'HTTP_ASSESS_EXECUTE'
+  },
   DATAX: {
     alias: 'DataX'
   },

@@ -81,7 +81,8 @@ export function formatParams(data: INodeData): {
     data.taskType === 'HTTP' ||
     data.taskType === 'HTTP_ASSET_BACKUP' ||
     data.taskType === 'HTTP_ASSET_ARCHIVE' ||
-    data.taskType === 'HTTP_ASSET_RECOVERY'
+    data.taskType === 'HTTP_ASSET_RECOVERY' ||
+    data.taskType === 'HTTP_ASSESS_EXECUTE'
   ) {
     taskParams.httpMethod = data.httpMethod
     taskParams.httpCheckCondition = data.httpCheckCondition

@@ -62,6 +62,7 @@ export default {
   HTTP_ASSET_BACKUP: useHttp,
   HTTP_ASSET_ARCHIVE: useHttp,
   HTTP_ASSET_RECOVERY: useHttp,
+  HTTP_ASSESS_EXECUTE: useHttp,
   PIGEON: usePigeon,
   SQL: useSql,
   PROCEDURE: useProcedure,

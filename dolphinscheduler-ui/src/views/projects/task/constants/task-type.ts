@@ -28,6 +28,7 @@ export type TaskType =
   | 'HTTP_ASSET_BACKUP'
   | 'HTTP_ASSET_ARCHIVE'
   | 'HTTP_ASSET_RECOVERY'
+  | 'HTTP_ASSESS_EXECUTE'
   | 'DATAX'
   | 'PIGEON'
   | 'SQOOP'
@@ -104,6 +105,9 @@ export const TASK_TYPES_MAP = {
   },
   HTTP_ASSET_RECOVERY: {
     alias: 'HTTP_ASSET_RECOVERY'
+  },
+  HTTP_ASSESS_EXECUTE: {
+    alias: 'HTTP_ASSESS_EXECUTE'
   },
   DATAX: {
     alias: 'DataX'
