@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Strings;
+import org.apache.dolphinscheduler.spi.enums.DbType;
 
 /**
  * Sql/Hql parameter
@@ -55,6 +56,11 @@ public class SqlParameters extends AbstractParameters {
      * datasource id
      */
     private int datasource;
+
+    /**
+     * 连接参数
+     */
+    private String connectionParams;
 
     /**
      * sql
@@ -136,6 +142,14 @@ public class SqlParameters extends AbstractParameters {
 
     public void setDatasource(int datasource) {
         this.datasource = datasource;
+    }
+
+    public String getConnectionParams() {
+        return connectionParams;
+    }
+
+    public void setConnectionParams(String connectionParams) {
+        this.connectionParams = connectionParams;
     }
 
     public String getSql() {
@@ -228,7 +242,7 @@ public class SqlParameters extends AbstractParameters {
 
     @Override
     public boolean checkParameters() {
-        return datasource != 0 && StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(sql);
+        return (datasource != 0 || StringUtils.isNotEmpty(connectionParams)) && StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(sql);
     }
 
     @Override
@@ -306,7 +320,9 @@ public class SqlParameters extends AbstractParameters {
     @Override
     public ResourceParametersHelper getResources() {
         ResourceParametersHelper resources = super.getResources();
-        resources.put(ResourceType.DATASOURCE, datasource);
+        if (datasource > 0) {
+            resources.put(ResourceType.DATASOURCE, datasource);
+        }
 
         // whether udf type
         boolean udfTypeFlag = Enums.getIfPresent(UdfType.class, Strings.nullToEmpty(this.getType())).isPresent()
@@ -329,9 +345,12 @@ public class SqlParameters extends AbstractParameters {
     public SQLTaskExecutionContext generateExtendedContext(ResourceParametersHelper parametersHelper) {
         SQLTaskExecutionContext sqlTaskExecutionContext = new SQLTaskExecutionContext();
 
-        DataSourceParameters dbSource =
-                (DataSourceParameters) parametersHelper.getResourceParameters(ResourceType.DATASOURCE, datasource);
-        sqlTaskExecutionContext.setConnectionParams(dbSource.getConnectionParams());
+        if (datasource > 0) {
+            DataSourceParameters dbSource = (DataSourceParameters) parametersHelper.getResourceParameters(ResourceType.DATASOURCE, datasource);
+            sqlTaskExecutionContext.setConnectionParams(dbSource.getConnectionParams());
+        } else {
+            sqlTaskExecutionContext.setConnectionParams(connectionParams);
+        }
 
         // whether udf type
         boolean udfTypeFlag = Enums.getIfPresent(UdfType.class, Strings.nullToEmpty(this.getType())).isPresent()

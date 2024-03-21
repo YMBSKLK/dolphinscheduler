@@ -132,9 +132,10 @@ public class SqlTask extends AbstractTask {
     public void handle(TaskCallBack taskCallBack) throws TaskException {
         logger.info("Full sql parameters: {}", sqlParameters);
         logger.info(
-                "sql type : {}, datasource : {}, sql : {} , localParams : {},udfs : {},showType : {},connParams : {},varPool : {} ,query max result limit  {}",
+                "sql type : {}, datasource : {}, connectionParams : {}, sql : {} , localParams : {},udfs : {},showType : {},connParams : {},varPool : {} ,query max result limit  {}",
                 sqlParameters.getType(),
                 sqlParameters.getDatasource(),
+                sqlParameters.getConnectionParams(),
                 sqlParameters.getSql(),
                 sqlParameters.getLocalParams(),
                 sqlParameters.getUdfs(),
