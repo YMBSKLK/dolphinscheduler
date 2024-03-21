@@ -23,6 +23,7 @@ import org.apache.dolphinscheduler.plugin.task.api.model.ResourceInfo;
 import org.apache.dolphinscheduler.plugin.task.api.parameters.AbstractParameters;
 import org.apache.dolphinscheduler.plugin.task.api.parameters.resource.DataSourceParameters;
 import org.apache.dolphinscheduler.plugin.task.api.parameters.resource.ResourceParametersHelper;
+import org.apache.dolphinscheduler.spi.enums.DbType;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +49,8 @@ public class ProcedureParameters extends AbstractParameters {
      */
     private int datasource;
 
+    private String connectionParams;
+
     private Map<String, Property> outProperty;
 
     /**
@@ -71,6 +74,14 @@ public class ProcedureParameters extends AbstractParameters {
         this.datasource = datasource;
     }
 
+    public String getConnectionParams() {
+        return connectionParams;
+    }
+
+    public void setConnectionParams(String connectionParams) {
+        this.connectionParams = connectionParams;
+    }
+
     public String getMethod() {
         return method;
     }
@@ -81,7 +92,8 @@ public class ProcedureParameters extends AbstractParameters {
 
     @Override
     public boolean checkParameters() {
-        return datasource != 0 && StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(method);
+        return (datasource != 0 || StringUtils.isNotEmpty(connectionParams)) && StringUtils.isNotEmpty(type)
+                && StringUtils.isNotEmpty(method);
     }
 
     @Override
@@ -91,9 +103,10 @@ public class ProcedureParameters extends AbstractParameters {
 
     @Override
     public String toString() {
-        return "ProcessdureParam{"
+        return "ProcedureParam{"
                 + "type='" + type + '\''
                 + ", datasource=" + datasource
+                + ", connectionParams=" + connectionParams + '\''
                 + ", method='" + method + '\''
                 + '}';
     }
@@ -129,14 +142,25 @@ public class ProcedureParameters extends AbstractParameters {
 
     @Override
     public ResourceParametersHelper getResources() {
-        ResourceParametersHelper resources = super.getResources();
-        resources.put(ResourceType.DATASOURCE, datasource);
-        return resources;
+        if (datasource > 0) {
+            ResourceParametersHelper resources = super.getResources();
+            resources.put(ResourceType.DATASOURCE, datasource);
+            return resources;
+        } else {
+            return super.getResources();
+        }
     }
 
     public ProcedureTaskExecutionContext generateExtendedContext(ResourceParametersHelper parametersHelper) {
-        DataSourceParameters dataSourceParameters =
-                (DataSourceParameters) parametersHelper.getResourceParameters(ResourceType.DATASOURCE, datasource);
+        DataSourceParameters dataSourceParameters;
+        if (datasource > 0) {
+            dataSourceParameters =
+                    (DataSourceParameters) parametersHelper.getResourceParameters(ResourceType.DATASOURCE, datasource);
+        } else {
+            dataSourceParameters = new DataSourceParameters();
+            dataSourceParameters.setType(DbType.valueOf(type));
+            dataSourceParameters.setConnectionParams(connectionParams);
+        }
         ProcedureTaskExecutionContext procedureTaskExecutionContext = new ProcedureTaskExecutionContext();
         procedureTaskExecutionContext.setConnectionParams(
                 Objects.nonNull(dataSourceParameters) ? dataSourceParameters.getConnectionParams() : null);

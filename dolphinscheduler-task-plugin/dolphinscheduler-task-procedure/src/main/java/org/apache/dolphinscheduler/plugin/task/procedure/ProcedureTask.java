@@ -91,9 +91,10 @@ public class ProcedureTask extends AbstractTask {
 
     @Override
     public void handle(TaskCallBack taskCallBack) throws TaskException {
-        logger.info("procedure type : {}, datasource : {}, method : {} , localParams : {}",
+        logger.info("procedure type : {}, datasource : {}, connectionParams : {}, method : {} , localParams : {}",
                 procedureParameters.getType(),
                 procedureParameters.getDatasource(),
+                procedureParameters.getConnectionParams(),
                 procedureParameters.getMethod(),
                 procedureParameters.getLocalParams());
 
