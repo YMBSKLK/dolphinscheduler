@@ -46,6 +46,8 @@ public class LogUtils {
 
     private static final Pattern APPLICATION_REGEX = Pattern.compile(TaskConstants.YARN_APPLICATION_REGEX);
 
+    private static final Pattern JOB_ID_REGEX = Pattern.compile("Job has been submitted with JobID ([A-Za-z0-9]+)");
+
     public List<String> getAppIds(@NonNull String logPath, @NonNull String appInfoPath, String fetchWay) {
         if (!StringUtils.isEmpty(fetchWay) && fetchWay.equals("aop")) {
             log.info("Start finding appId in {}, fetch way: {} ", appInfoPath);
@@ -96,4 +98,31 @@ public class LogUtils {
             return Collections.emptyList();
         }
     }
+
+    public List<String> getJobIdsFromLogFile(@NonNull String logPath) {
+        File logFile = new File(logPath);
+        if (!logFile.exists() || !logFile.isFile()) {
+            return Collections.emptyList();
+        }
+        Set<String> appIds = new HashSet<>();
+        try (Stream<String> stream = Files.lines(Paths.get(logPath))) {
+            stream.filter(line -> {
+                Matcher matcher = JOB_ID_REGEX.matcher(line);
+                return matcher.find();
+            }).forEach(line -> {
+                Matcher matcher = JOB_ID_REGEX.matcher(line);
+                if (matcher.find()) {
+                    String appId = matcher.group(1);
+                    if (appIds.add(appId)) {
+                        log.info("Find appId: {} from {}", appId, logPath);
+                    }
+                }
+            });
+            return new ArrayList<>(appIds);
+        } catch (IOException e) {
+            log.error("Get appId from log file error, logPath: {}", logPath, e);
+            return Collections.emptyList();
+        }
+    }
+
 }

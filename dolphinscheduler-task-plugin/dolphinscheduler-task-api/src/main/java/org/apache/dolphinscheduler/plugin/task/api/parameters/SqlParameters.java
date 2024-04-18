@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Strings;
-import org.apache.dolphinscheduler.spi.enums.DbType;
 
 /**
  * Sql/Hql parameter
@@ -242,7 +241,8 @@ public class SqlParameters extends AbstractParameters {
 
     @Override
     public boolean checkParameters() {
-        return (datasource != 0 || StringUtils.isNotEmpty(connectionParams)) && StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(sql);
+        return (datasource != 0 || StringUtils.isNotEmpty(connectionParams)) && StringUtils.isNotEmpty(type)
+                && StringUtils.isNotEmpty(sql);
     }
 
     @Override
@@ -346,7 +346,8 @@ public class SqlParameters extends AbstractParameters {
         SQLTaskExecutionContext sqlTaskExecutionContext = new SQLTaskExecutionContext();
 
         if (datasource > 0) {
-            DataSourceParameters dbSource = (DataSourceParameters) parametersHelper.getResourceParameters(ResourceType.DATASOURCE, datasource);
+            DataSourceParameters dbSource =
+                    (DataSourceParameters) parametersHelper.getResourceParameters(ResourceType.DATASOURCE, datasource);
             sqlTaskExecutionContext.setConnectionParams(dbSource.getConnectionParams());
         } else {
             sqlTaskExecutionContext.setConnectionParams(connectionParams);

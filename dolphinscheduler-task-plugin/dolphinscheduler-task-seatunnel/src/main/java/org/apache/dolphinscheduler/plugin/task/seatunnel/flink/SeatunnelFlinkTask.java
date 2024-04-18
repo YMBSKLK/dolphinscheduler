@@ -18,11 +18,17 @@
 package org.apache.dolphinscheduler.plugin.task.seatunnel.flink;
 
 import org.apache.dolphinscheduler.common.utils.JSONUtils;
+import org.apache.dolphinscheduler.plugin.task.api.TaskConstants;
+import org.apache.dolphinscheduler.plugin.task.api.TaskException;
 import org.apache.dolphinscheduler.plugin.task.api.TaskExecutionContext;
+import org.apache.dolphinscheduler.plugin.task.api.utils.LogUtils;
+import org.apache.dolphinscheduler.plugin.task.seatunnel.EngineEnum;
 import org.apache.dolphinscheduler.plugin.task.seatunnel.SeatunnelTask;
+import org.apache.dolphinscheduler.plugin.task.seatunnel.util.FlinkArgsUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,4 +59,26 @@ public class SeatunnelFlinkTask extends SeatunnelTask {
         return args;
     }
 
+    @Override
+    public void cancelApplication() throws TaskException {
+        super.cancelApplication();
+        if (EngineEnum.FLINK.equals(seatunnelParameters.getEngine())) {
+            List<String> jobIds = LogUtils.getJobIdsFromLogFile(taskRequest.getLogPath());
+            if (!jobIds.isEmpty()) {
+                taskExecutionContext.setAppIds(String.join(TaskConstants.COMMA, jobIds));
+                List<String> args = FlinkArgsUtils.buildCancelCommandLine(taskExecutionContext);
+
+                logger.info("cancel application args:{}", args);
+
+                ProcessBuilder processBuilder = new ProcessBuilder();
+                processBuilder.command(args);
+                try {
+                    processBuilder.start();
+                } catch (IOException e) {
+                    throw new TaskException("cancel application error", e);
+                }
+            }
+        }
+
+    }
 }
