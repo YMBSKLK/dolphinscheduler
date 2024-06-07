@@ -29,6 +29,7 @@ import org.apache.commons.collections.MapUtils;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -53,25 +55,33 @@ public class MessageRetryRunner extends BaseDaemonThread {
 
     private static long MESSAGE_RETRY_WINDOW = Duration.ofMinutes(5L).toMillis();
 
+//    @Autowired
+//    private ApplicationContext applicationContext;
+
+    @Lazy
     @Autowired
-    private ApplicationContext applicationContext;
+    private List<MessageSender> messageSenders;
 
     private Map<CommandType, MessageSender<BaseCommand>> messageSenderMap = new HashMap<>();
 
     private Map<Integer, Map<CommandType, BaseCommand>> needToRetryMessages = new ConcurrentHashMap<>();
 
-    @PostConstruct
-    public void init() {
-        Map<String, MessageSender> messageSenders = applicationContext.getBeansOfType(MessageSender.class);
-        messageSenders.values().forEach(messageSender -> {
-            messageSenderMap.put(messageSender.getMessageType(), messageSender);
-            logger.info("Injected message sender: {}", messageSender.getClass().getName());
-        });
-    }
+//    @PostConstruct
+//    public void init() {
+//        Map<String, MessageSender> messageSenders = applicationContext.getBeansOfType(MessageSender.class);
+//        messageSenders.values().forEach(messageSender -> {
+//            messageSenderMap.put(messageSender.getMessageType(), messageSender);
+//            logger.info("Injected message sender: {}", messageSender.getClass().getName());
+//        });
+//    }
 
     @Override
     public synchronized void start() {
         logger.info("Message retry runner staring");
+        messageSenders.forEach(messageSender -> {
+            messageSenderMap.put(messageSender.getMessageType(), messageSender);
+            logger.info("Injected message sender: {}", messageSender.getClass().getName());
+        });
         super.start();
         logger.info("Message retry runner started");
     }
