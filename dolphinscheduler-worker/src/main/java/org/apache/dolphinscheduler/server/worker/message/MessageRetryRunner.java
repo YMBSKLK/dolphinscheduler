@@ -33,14 +33,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import lombok.NonNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -55,8 +52,8 @@ public class MessageRetryRunner extends BaseDaemonThread {
 
     private static long MESSAGE_RETRY_WINDOW = Duration.ofMinutes(5L).toMillis();
 
-//    @Autowired
-//    private ApplicationContext applicationContext;
+    // @Autowired
+    // private ApplicationContext applicationContext;
 
     @Lazy
     @Autowired
@@ -66,14 +63,14 @@ public class MessageRetryRunner extends BaseDaemonThread {
 
     private Map<Integer, Map<CommandType, BaseCommand>> needToRetryMessages = new ConcurrentHashMap<>();
 
-//    @PostConstruct
-//    public void init() {
-//        Map<String, MessageSender> messageSenders = applicationContext.getBeansOfType(MessageSender.class);
-//        messageSenders.values().forEach(messageSender -> {
-//            messageSenderMap.put(messageSender.getMessageType(), messageSender);
-//            logger.info("Injected message sender: {}", messageSender.getClass().getName());
-//        });
-//    }
+    // @PostConstruct
+    // public void init() {
+    // Map<String, MessageSender> messageSenders = applicationContext.getBeansOfType(MessageSender.class);
+    // messageSenders.values().forEach(messageSender -> {
+    // messageSenderMap.put(messageSender.getMessageType(), messageSender);
+    // logger.info("Injected message sender: {}", messageSender.getClass().getName());
+    // });
+    // }
 
     @Override
     public synchronized void start() {
