@@ -38,6 +38,8 @@ import org.apache.dolphinscheduler.plugin.task.api.parameters.SqlParameters;
 import org.apache.dolphinscheduler.plugin.task.api.parameters.resource.UdfFuncParameters;
 import org.apache.dolphinscheduler.plugin.task.api.parser.ParamUtils;
 import org.apache.dolphinscheduler.plugin.task.api.parser.ParameterUtils;
+import org.apache.dolphinscheduler.plugin.task.api.utils.AesUtil;
+import org.apache.dolphinscheduler.plugin.task.api.utils.DatasourceConstant;
 import org.apache.dolphinscheduler.spi.datasource.BaseConnectionParam;
 import org.apache.dolphinscheduler.spi.enums.DbType;
 
@@ -150,6 +152,18 @@ public class SqlTask extends AbstractTask {
             baseConnectionParam = (BaseConnectionParam) DataSourceUtils.buildConnectionParams(
                     DbType.valueOf(sqlParameters.getType()),
                     sqlTaskExecutionContext.getConnectionParams());
+            try {
+                baseConnectionParam.setUser(AesUtil.decryptFormBase64ToString(baseConnectionParam.getUser(),
+                        DatasourceConstant.AES_SECRET_KEY));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                baseConnectionParam.setPassword(AesUtil.decryptFormBase64ToString(baseConnectionParam.getPassword(),
+                        DatasourceConstant.AES_SECRET_KEY));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (DbType.valueOf(sqlParameters.getType()).isSupportMultipleStatement()) {
                 separator = "";
             }

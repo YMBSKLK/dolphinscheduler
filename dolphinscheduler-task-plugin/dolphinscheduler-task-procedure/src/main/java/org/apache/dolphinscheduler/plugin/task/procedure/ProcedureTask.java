@@ -33,7 +33,9 @@ import org.apache.dolphinscheduler.plugin.task.api.enums.TaskTimeoutStrategy;
 import org.apache.dolphinscheduler.plugin.task.api.model.Property;
 import org.apache.dolphinscheduler.plugin.task.api.parameters.AbstractParameters;
 import org.apache.dolphinscheduler.plugin.task.api.parser.ParameterUtils;
-import org.apache.dolphinscheduler.spi.datasource.ConnectionParam;
+import org.apache.dolphinscheduler.plugin.task.api.utils.AesUtil;
+import org.apache.dolphinscheduler.plugin.task.api.utils.DatasourceConstant;
+import org.apache.dolphinscheduler.spi.datasource.BaseConnectionParam;
 import org.apache.dolphinscheduler.spi.enums.DbType;
 
 import org.apache.commons.lang3.StringUtils;
@@ -104,10 +106,22 @@ public class ProcedureTask extends AbstractTask {
             // load class
             DbType dbType = DbType.valueOf(procedureParameters.getType());
             // get datasource
-            ConnectionParam connectionParam =
-                    DataSourceUtils.buildConnectionParams(DbType.valueOf(procedureParameters.getType()),
-                            procedureTaskExecutionContext.getConnectionParams());
+            BaseConnectionParam connectionParam = (BaseConnectionParam) DataSourceUtils.buildConnectionParams(
+                    DbType.valueOf(procedureParameters.getType()),
+                    procedureTaskExecutionContext.getConnectionParams());
 
+            try {
+                connectionParam.setUser(AesUtil.decryptFormBase64ToString(connectionParam.getUser(),
+                        DatasourceConstant.AES_SECRET_KEY));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                connectionParam.setPassword(AesUtil.decryptFormBase64ToString(connectionParam.getPassword(),
+                        DatasourceConstant.AES_SECRET_KEY));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // get jdbc connection
             connection = DataSourceClientProvider.getInstance().getConnection(dbType, connectionParam);
 

@@ -743,12 +743,11 @@ public class ProcessInstanceServiceImpl extends BaseServiceImpl implements Proce
                     projectCode, processInstance.getProcessDefinitionCode(), processInstanceId);
         }
 
-        // delete database cascade
-        int delete = processService.deleteWorkProcessInstanceById(processInstanceId);
-
         processService.deleteAllSubWorkProcessByParentId(processInstanceId);
         processService.deleteWorkProcessMapByParentId(processInstanceId);
         processService.deleteWorkTaskInstanceByProcessInstanceId(processInstanceId);
+        // delete database cascade
+        int delete = processService.deleteWorkProcessInstanceById(processInstanceId);
 
         if (delete > 0) {
             logger.info(
