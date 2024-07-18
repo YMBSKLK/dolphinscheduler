@@ -64,6 +64,7 @@ import org.apache.dolphinscheduler.plugin.task.api.enums.DependResult;
 import org.apache.dolphinscheduler.plugin.task.api.enums.Direct;
 import org.apache.dolphinscheduler.plugin.task.api.enums.TaskExecutionStatus;
 import org.apache.dolphinscheduler.plugin.task.api.model.Property;
+import org.apache.dolphinscheduler.plugin.task.api.utils.LogUtils;
 import org.apache.dolphinscheduler.remote.command.HostUpdateCommand;
 import org.apache.dolphinscheduler.remote.utils.Host;
 import org.apache.dolphinscheduler.server.master.config.MasterConfig;
@@ -99,6 +100,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1331,6 +1333,31 @@ public class WorkflowExecuteRunnable implements Callable<WorkflowSubmitStatue> {
             if (existTaskInstanceOptional.isPresent()) {
                 taskInstances.add(existTaskInstanceOptional.get());
                 continue;
+            }
+            if(taskNodeObject.getType().equals("ETL")
+                    || taskNodeObject.getType().equals("QUALITY")
+                    || taskNodeObject.getType().equals("SEATUNNEL")){
+                List<TaskInstance> previousTaskList = taskInstanceDao.findPreviousTaskListByWorkProcessId(processInstance.getId());
+                if(CollectionUtils.isNotEmpty(previousTaskList)){
+                    TaskInstance lastTaskInstance = previousTaskList.stream()
+                            .filter(taskInstance -> taskInstance.getTaskType().equals(taskNodeObject.getType()) && taskInstance.getTaskCode() == taskNodeObject.getCode())
+                            .sorted(Comparator.comparingInt(TaskInstance::getId))
+                            .reduce((o1,o2)->o2).orElse(null);
+                    if(Objects.nonNull(lastTaskInstance)){
+                        List<String> jobIds = LogUtils.getJobIdsFromLogFile(lastTaskInstance.getLogPath());
+                        if(CollectionUtils.isNotEmpty(jobIds)){
+                            Map<String, Object> map = JSONUtils.toMap(taskNodeObject.getParams(), String.class, Object.class);
+                            String others = "";
+                            if (map.containsKey("others")){
+                                others += Objects.toString(map.get(others), "");
+                            }
+
+                            others += "-r " + jobIds.get(0);
+                            map.put("others", others);
+                            taskNodeObject.setParams(JSONUtils.toJsonString(map));
+                        }
+                    }
+                }
             }
             TaskInstance task = createTaskInstance(processInstance, taskNodeObject);
             taskInstances.add(task);

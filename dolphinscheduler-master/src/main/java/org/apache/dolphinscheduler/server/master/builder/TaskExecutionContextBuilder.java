@@ -79,6 +79,7 @@ public class TaskExecutionContextBuilder {
         taskExecutionContext.setCpuQuota(taskInstance.getCpuQuota());
         taskExecutionContext.setMemoryMax(taskInstance.getMemoryMax());
         taskExecutionContext.setAppIds(taskInstance.getAppLink());
+        taskExecutionContext.setTaskParams(taskInstance.getTaskParams());
         return this;
     }
 
@@ -92,7 +93,7 @@ public class TaskExecutionContextBuilder {
                         Math.min(taskDefinition.getTimeout() * SEC_2_MINUTES_TIME_UNIT, Integer.MAX_VALUE));
             }
         }
-        taskExecutionContext.setTaskParams(taskDefinition.getTaskParams());
+//        taskExecutionContext.setTaskParams(taskDefinition.getTaskParams());
         return this;
     }
 
