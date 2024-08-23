@@ -18,6 +18,7 @@
 package org.apache.dolphinscheduler.api.service;
 
 import org.apache.dolphinscheduler.dao.entity.ExecuteStatusCount;
+import org.apache.dolphinscheduler.dao.entity.TaskExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.User;
 
 import org.apache.ibatis.annotations.Param;
@@ -91,7 +92,7 @@ public interface DataAnalysisService {
      * @param projectCodes Project codes list to filter
      * @return List of ExecuteStatusCount
      */
-    List<ExecuteStatusCount> countTaskInstanceAllStatesByProjectCodes(@Param("startTime") Date startTime,
-                                                                      @Param("endTime") Date endTime,
-                                                                      @Param("projectCodes") Long[] projectCodes);
+    List<TaskExecuteStatusCount> countTaskInstanceAllStatesByProjectCodes(@Param("startTime") Date startTime,
+                                                                          @Param("endTime") Date endTime,
+                                                                          @Param("projectCodes") Long[] projectCodes);
 }

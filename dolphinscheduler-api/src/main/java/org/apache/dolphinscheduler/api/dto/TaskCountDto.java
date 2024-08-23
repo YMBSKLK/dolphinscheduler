@@ -18,6 +18,7 @@
 package org.apache.dolphinscheduler.api.dto;
 
 import org.apache.dolphinscheduler.dao.entity.ExecuteStatusCount;
+import org.apache.dolphinscheduler.dao.entity.TaskExecuteStatusCount;
 import org.apache.dolphinscheduler.plugin.task.api.enums.TaskExecutionStatus;
 
 import java.util.Arrays;
@@ -42,29 +43,34 @@ public class TaskCountDto {
     /**
      * task state count list
      */
-    private List<TaskStateCount> taskCountDtos;
+    private List<TaskExecuteStatusCount> taskCountDtos;
 
-    public TaskCountDto(List<ExecuteStatusCount> taskInstanceStateCounts) {
+    public TaskCountDto(List<TaskExecuteStatusCount> taskInstanceStateCounts) {
         countTaskDtos(taskInstanceStateCounts);
     }
 
-    private void countTaskDtos(List<ExecuteStatusCount> taskInstanceStateCounts) {
+    private void countTaskDtos(List<TaskExecuteStatusCount> taskInstanceStateCounts) {
         Map<TaskExecutionStatus, Integer> statusCountMap = taskInstanceStateCounts.stream()
-                .collect(Collectors.toMap(ExecuteStatusCount::getState, ExecuteStatusCount::getCount, Integer::sum));
+                .collect(Collectors.toMap(
+                        TaskExecuteStatusCount::getState,
+                        TaskExecuteStatusCount::getCount,
+                        Integer::sum
+                ));
+
 
         taskCountDtos = Arrays.stream(TaskExecutionStatus.values())
-                .map(status -> new TaskStateCount(status, statusCountMap.getOrDefault(status, 0)))
+                .map(status -> new TaskExecuteStatusCount(status, statusCountMap.getOrDefault(status, 0)))
                 .collect(Collectors.toList());
 
         totalCount = taskCountDtos.stream()
-                .mapToInt(TaskStateCount::getCount)
+                .mapToInt(TaskExecuteStatusCount::getCount)
                 .sum();
     }
 
     // remove the specified state
     public void removeStateFromCountList(TaskExecutionStatus status) {
-        for (TaskStateCount count : this.taskCountDtos) {
-            if (count.getTaskStateType().equals(status)) {
+        for (TaskExecuteStatusCount count : this.taskCountDtos) {
+            if (count.getState().equals(status)) {
                 this.taskCountDtos.remove(count);
                 break;
             }

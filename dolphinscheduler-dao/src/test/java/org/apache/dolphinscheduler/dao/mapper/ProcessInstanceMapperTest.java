@@ -23,6 +23,7 @@ import org.apache.dolphinscheduler.common.enums.WorkflowExecutionStatus;
 import org.apache.dolphinscheduler.dao.BaseDaoTest;
 import org.apache.dolphinscheduler.dao.entity.ExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.ProcessDefinition;
+import org.apache.dolphinscheduler.dao.entity.ProcessExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.ProcessInstance;
 import org.apache.dolphinscheduler.dao.entity.Project;
 import org.apache.dolphinscheduler.plugin.task.api.enums.TaskExecutionStatus;
@@ -266,7 +267,7 @@ public class ProcessInstanceMapperTest extends BaseDaoTest {
 
         Long[] projectCodes = new Long[]{processDefinition.getProjectCode()};
 
-        List<ExecuteStatusCount> executeStatusCounts =
+        List<ProcessExecuteStatusCount> executeStatusCounts =
                 processInstanceMapper.countInstanceStateByProjectCodes(null, null, projectCodes);
 
         Assertions.assertNotEquals(executeStatusCounts.size(), 0);

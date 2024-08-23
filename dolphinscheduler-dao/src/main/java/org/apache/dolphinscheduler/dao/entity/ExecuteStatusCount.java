@@ -26,12 +26,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExecuteStatusCount {
+public class ExecuteStatusCount<T> {
 
     /**
      * execution state
      */
-    private TaskExecutionStatus state;
+    private T state;
 
     /**
      * count for state

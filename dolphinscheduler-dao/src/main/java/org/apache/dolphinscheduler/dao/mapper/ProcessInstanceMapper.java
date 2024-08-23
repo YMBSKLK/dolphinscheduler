@@ -19,6 +19,7 @@ package org.apache.dolphinscheduler.dao.mapper;
 
 import org.apache.dolphinscheduler.common.enums.WorkflowExecutionStatus;
 import org.apache.dolphinscheduler.dao.entity.ExecuteStatusCount;
+import org.apache.dolphinscheduler.dao.entity.ProcessExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.ProcessInstance;
 
 import org.apache.ibatis.annotations.Param;
@@ -167,7 +168,7 @@ public interface ProcessInstanceMapper extends BaseMapper<ProcessInstance> {
      * @param projectCodes projectCodes
      * @return ExecuteStatusCount list
      */
-    List<ExecuteStatusCount> countInstanceStateByProjectCodes(
+    List<ProcessExecuteStatusCount> countInstanceStateByProjectCodes(
                                                               @Param("startTime") Date startTime,
                                                               @Param("endTime") Date endTime,
                                                               @Param("projectCodes") Long[] projectCodes);
