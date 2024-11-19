@@ -34,7 +34,6 @@ import org.apache.dolphinscheduler.common.utils.DateUtils;
 import org.apache.dolphinscheduler.common.utils.TriFunction;
 import org.apache.dolphinscheduler.dao.entity.CommandCount;
 import org.apache.dolphinscheduler.dao.entity.DefinitionGroupByUser;
-import org.apache.dolphinscheduler.dao.entity.ExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.ProcessExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.Project;
 import org.apache.dolphinscheduler.dao.entity.TaskExecuteStatusCount;
@@ -141,10 +140,10 @@ public class DataAnalysisServiceImpl extends BaseServiceImpl implements DataAnal
                         projectCodes));
 
         // process state count needs to remove state of forced success
-//        if (result.containsKey(Constants.STATUS) && result.get(Constants.STATUS).equals(Status.SUCCESS)) {
-//            ((TaskCountDto) result.get(Constants.DATA_LIST))
-//                    .removeStateFromCountList(TaskExecutionStatus.FORCED_SUCCESS);
-//        }
+        // if (result.containsKey(Constants.STATUS) && result.get(Constants.STATUS).equals(Status.SUCCESS)) {
+        // ((TaskCountDto) result.get(Constants.DATA_LIST))
+        // .removeStateFromCountList(TaskExecutionStatus.FORCED_SUCCESS);
+        // }
         return result;
     }
 
@@ -156,7 +155,8 @@ public class DataAnalysisServiceImpl extends BaseServiceImpl implements DataAnal
      * @param startDate   start date
      * @param endDate     end date
      */
-    private Map<String, Object> countTaskStateByProject(User loginUser, long projectCode, String startDate, String endDate,
+    private Map<String, Object> countTaskStateByProject(User loginUser, long projectCode, String startDate,
+                                                        String endDate,
                                                         TriFunction<Date, Date, Long[], List<TaskExecuteStatusCount>> instanceStateCounter) {
         Map<String, Object> result = new HashMap<>();
         if (projectCode != 0) {
@@ -198,7 +198,8 @@ public class DataAnalysisServiceImpl extends BaseServiceImpl implements DataAnal
         return result;
     }
 
-    private Map<String, Object> countProcessStateByProject(User loginUser, long projectCode, String startDate, String endDate,
+    private Map<String, Object> countProcessStateByProject(User loginUser, long projectCode, String startDate,
+                                                           String endDate,
                                                            TriFunction<Date, Date, Long[], List<ProcessExecuteStatusCount>> instanceStateCounter) {
         Map<String, Object> result = new HashMap<>();
         if (projectCode != 0) {
@@ -370,7 +371,7 @@ public class DataAnalysisServiceImpl extends BaseServiceImpl implements DataAnal
 
     @Override
     public List<TaskExecuteStatusCount> countTaskInstanceAllStatesByProjectCodes(Date startTime, Date endTime,
-                                                                             Long[] projectCodes) {
+                                                                                 Long[] projectCodes) {
         Optional<List<TaskExecuteStatusCount>> startTimeStates = Optional.ofNullable(
                 this.taskInstanceMapper.countTaskInstanceStateByProjectCodes(startTime, endTime, projectCodes));
 

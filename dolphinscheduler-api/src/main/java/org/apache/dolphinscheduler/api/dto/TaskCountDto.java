@@ -17,7 +17,6 @@
 
 package org.apache.dolphinscheduler.api.dto;
 
-import org.apache.dolphinscheduler.dao.entity.ExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.TaskExecuteStatusCount;
 import org.apache.dolphinscheduler.plugin.task.api.enums.TaskExecutionStatus;
 
@@ -54,9 +53,7 @@ public class TaskCountDto {
                 .collect(Collectors.toMap(
                         TaskExecuteStatusCount::getState,
                         TaskExecuteStatusCount::getCount,
-                        Integer::sum
-                ));
-
+                        Integer::sum));
 
         taskCountDtos = Arrays.stream(TaskExecutionStatus.values())
                 .map(status -> new TaskExecuteStatusCount(status, statusCountMap.getOrDefault(status, 0)))

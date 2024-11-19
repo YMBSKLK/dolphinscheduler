@@ -19,7 +19,6 @@ package org.apache.dolphinscheduler.dao.mapper;
 
 import org.apache.dolphinscheduler.common.enums.Flag;
 import org.apache.dolphinscheduler.common.enums.TaskExecuteType;
-import org.apache.dolphinscheduler.dao.entity.ExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.TaskExecuteStatusCount;
 import org.apache.dolphinscheduler.dao.entity.TaskInstance;
 import org.apache.dolphinscheduler.plugin.task.api.enums.TaskExecutionStatus;
@@ -74,8 +73,8 @@ public interface TaskInstanceMapper extends BaseMapper<TaskInstance> {
      * @return List of TaskStateCount
      */
     List<TaskExecuteStatusCount> countTaskInstanceStateByProjectCodes(@Param("startTime") Date startTime,
-                                                              @Param("endTime") Date endTime,
-                                                              @Param("projectCodes") Long[] projectCodes);
+                                                                      @Param("endTime") Date endTime,
+                                                                      @Param("projectCodes") Long[] projectCodes);
 
     /**
      * Statistics task instance group by given project codes list by submit time

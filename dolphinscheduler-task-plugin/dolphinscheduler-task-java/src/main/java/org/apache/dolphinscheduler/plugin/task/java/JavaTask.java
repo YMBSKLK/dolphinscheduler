@@ -311,7 +311,13 @@ public class JavaTask extends AbstractTask {
         if (javaParameters.isModulePath()) {
             builder.append("--module-path");
         } else {
-            builder.append("--class-path");
+            String property = System.getProperty("java.specification.version");
+            if (Float.valueOf(property) <= 1.8) {
+                builder.append("-classpath");
+            } else {
+                builder.append("--class-path");
+            }
+
         }
         builder.append(" ").append(JavaConstants.CLASSPATH_CURRENT_DIR)
                 .append(JavaConstants.PATH_SEPARATOR)

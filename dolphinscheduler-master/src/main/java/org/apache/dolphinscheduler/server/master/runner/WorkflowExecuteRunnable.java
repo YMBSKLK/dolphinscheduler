@@ -1334,21 +1334,24 @@ public class WorkflowExecuteRunnable implements Callable<WorkflowSubmitStatue> {
                 taskInstances.add(existTaskInstanceOptional.get());
                 continue;
             }
-            if(taskNodeObject.getType().equals("ETL")
+            if (taskNodeObject.getType().equals("ETL")
                     || taskNodeObject.getType().equals("QUALITY")
-                    || taskNodeObject.getType().equals("SEATUNNEL")){
-                List<TaskInstance> previousTaskList = taskInstanceDao.findPreviousTaskListByWorkProcessId(processInstance.getId());
-                if(CollectionUtils.isNotEmpty(previousTaskList)){
+                    || taskNodeObject.getType().equals("SEATUNNEL")) {
+                List<TaskInstance> previousTaskList =
+                        taskInstanceDao.findPreviousTaskListByWorkProcessId(processInstance.getId());
+                if (CollectionUtils.isNotEmpty(previousTaskList)) {
                     TaskInstance lastTaskInstance = previousTaskList.stream()
-                            .filter(taskInstance -> taskInstance.getTaskType().equals(taskNodeObject.getType()) && taskInstance.getTaskCode() == taskNodeObject.getCode())
+                            .filter(taskInstance -> taskInstance.getTaskType().equals(taskNodeObject.getType())
+                                    && taskInstance.getTaskCode() == taskNodeObject.getCode())
                             .sorted(Comparator.comparingInt(TaskInstance::getId))
-                            .reduce((o1,o2)->o2).orElse(null);
-                    if(Objects.nonNull(lastTaskInstance)){
+                            .reduce((o1, o2) -> o2).orElse(null);
+                    if (Objects.nonNull(lastTaskInstance)) {
                         List<String> jobIds = LogUtils.getJobIdsFromLogFile(lastTaskInstance.getLogPath());
-                        if(CollectionUtils.isNotEmpty(jobIds)){
-                            Map<String, Object> map = JSONUtils.toMap(taskNodeObject.getParams(), String.class, Object.class);
+                        if (CollectionUtils.isNotEmpty(jobIds)) {
+                            Map<String, Object> map =
+                                    JSONUtils.toMap(taskNodeObject.getParams(), String.class, Object.class);
                             String others = "";
-                            if (map.containsKey("others")){
+                            if (map.containsKey("others")) {
                                 others += Objects.toString(map.get(others), "");
                             }
 

@@ -1,8 +1,5 @@
 package org.apache.dolphinscheduler.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.dolphinscheduler.common.enums.WorkflowExecutionStatus;
 import org.apache.dolphinscheduler.dao.entity.ProcessExecuteStatusCount;
 
@@ -10,6 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -35,8 +36,7 @@ public class ProcessCountDto {
                 .collect(Collectors.toMap(
                         ProcessExecuteStatusCount::getState,
                         ProcessExecuteStatusCount::getCount,
-                        Integer::sum
-                ));
+                        Integer::sum));
 
         processCountDtos = Arrays.stream(WorkflowExecutionStatus.values())
                 .map(status -> new ProcessExecuteStatusCount(status, statusCountMap.getOrDefault(status, 0)))
