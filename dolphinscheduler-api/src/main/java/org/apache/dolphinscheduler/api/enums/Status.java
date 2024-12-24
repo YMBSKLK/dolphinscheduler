@@ -522,6 +522,8 @@ public enum Status {
 
     GET_TASK_DEFINITION_COUNT_ERROR(9000003, "", ""),
 
+    ILLEGAL_RESOURCE_PATH(20020, "Resource file [{0}] is illegal", "非法的资源路径[{0}]"),
+
     GET_WORKFLOW_DEFINITION_COUNT_ERROR(9000004, "", "");
     private final int code;
     private final String enMsg;
