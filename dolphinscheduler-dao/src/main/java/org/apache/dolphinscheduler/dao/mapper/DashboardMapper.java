@@ -9,13 +9,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 public interface DashboardMapper extends BaseMapper {
 
-    int getWorkflowInstanceCount(Integer state);
+    int getWorkflowInstanceCount(@Param("projectCode") Long projectCode, @Param("state") Integer state);
 
     int getTaskInstanceCount(@Param("projectCode") Long projectCode, @Param("state") Integer state);
 
     int getTaskDefinitionCount(@Param("projectCode") Long projectCode);
 
-    int getWorkflowDefinitionCount(Integer releaseState);
+    int getWorkflowDefinitionCount(@Param("projectCode") Long projectCode, @Param("releaseState") Integer releaseState);
 
     List<Map<String, Object>> processFailTop5(@Param("projectCode") Long projectCode);
 
