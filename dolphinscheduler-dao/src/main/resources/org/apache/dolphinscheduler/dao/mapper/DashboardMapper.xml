@@ -26,6 +26,9 @@
         <if test="state!=null and state>-1">
              and instance.state = #{state}
         </if>
+        <if test="projectCode!=null and projectCode>-1">
+            and define.project_code = #{projectCode}
+        </if>
     </select>
 
     <select id="getTaskInstanceCount" resultType="java.lang.Integer">
@@ -45,6 +48,9 @@
         select count(1) from t_ds_process_definition where 1=1
         <if test="releaseState != null and releaseState>-1">
             and release_state = #{releaseState}
+        </if>
+        <if test="projectCode != null and projectCode>-1">
+            and project_code = #{projectCode}
         </if>
     </select>
 

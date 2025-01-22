@@ -16,8 +16,8 @@ public class DashboardServiceImpl extends BaseServiceImpl implements DashboardSe
     private DashboardMapper dashboardMapper;
 
     @Override
-    public int getWorkflowInstanceCount(Integer state) {
-        return dashboardMapper.getWorkflowInstanceCount(state);
+    public int getWorkflowInstanceCount(Long projectCode, Integer state) {
+        return dashboardMapper.getWorkflowInstanceCount(projectCode, state);
     }
 
     @Override
@@ -31,8 +31,8 @@ public class DashboardServiceImpl extends BaseServiceImpl implements DashboardSe
     }
 
     @Override
-    public int getWorkflowDefinitionCount(Integer releaseState) {
-        return dashboardMapper.getWorkflowDefinitionCount(releaseState);
+    public int getWorkflowDefinitionCount(Long projectCode, Integer releaseState) {
+        return dashboardMapper.getWorkflowDefinitionCount(projectCode, releaseState);
     }
 
     @Override

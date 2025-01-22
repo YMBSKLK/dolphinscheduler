@@ -101,6 +101,7 @@ public class SpringConnectionFactory {
         properties.setProperty("MySQL", "mysql");
         properties.setProperty("PostgreSQL", "pg");
         properties.setProperty("h2", "h2");
+        properties.setProperty("HighGo", DbType.HIGH_GO.getDb());
         databaseIdProvider.setProperties(properties);
         return databaseIdProvider;
     }
@@ -122,5 +123,12 @@ public class SpringConnectionFactory {
     @Profile("postgresql")
     public DbType postgresql() {
         return DbType.POSTGRE_SQL;
+    }
+
+    @Bean
+    @Primary
+    @Profile("highgo")
+    public DbType highgo() {
+        return DbType.HIGH_GO;
     }
 }

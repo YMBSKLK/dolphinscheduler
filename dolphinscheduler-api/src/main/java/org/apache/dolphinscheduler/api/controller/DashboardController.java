@@ -33,8 +33,9 @@ public class DashboardController extends BaseController {
     @GetMapping(value = "/getWorkflowInstanceCount")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_WORKFLOW_INSTANCE_COUNT_ERROR)
-    public Result getWorkflowInstanceCount(@RequestParam(value = "state", required = false) Integer state) {
-        int result = dashboardService.getWorkflowInstanceCount(state);
+    public Result getWorkflowInstanceCount(@RequestParam(value = "state", required = false) Integer state,
+                                           @RequestParam(value = "projectCode", required = false) Long projectCode) {
+        int result = dashboardService.getWorkflowInstanceCount(projectCode, state);
         return success(result);
     }
 
@@ -73,8 +74,9 @@ public class DashboardController extends BaseController {
     @GetMapping(value = "/getWorkflowDefinitionCount")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_WORKFLOW_DEFINITION_COUNT_ERROR)
-    public Result getWorkflowDefinitionCount(@RequestParam(value = "releaseState", required = false) Integer releaseState) {
-        int result = dashboardService.getWorkflowDefinitionCount(releaseState);
+    public Result getWorkflowDefinitionCount(@RequestParam(value = "projectCode", required = false) Long projectCode,
+                                             @RequestParam(value = "releaseState", required = false) Integer releaseState) {
+        int result = dashboardService.getWorkflowDefinitionCount(projectCode, releaseState);
         return success(result);
     }
 

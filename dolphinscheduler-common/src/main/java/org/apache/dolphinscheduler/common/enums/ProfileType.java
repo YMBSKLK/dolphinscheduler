@@ -30,5 +30,7 @@ public enum ProfileType {
 
     public static final String POSTGRESQL = "postgresql";
 
-    public static final List<String> DATASOURCE_PROFILE = Lists.newArrayList(H2, MYSQL, POSTGRESQL);
+    public static final String HIGHGO = "highgo";
+
+    public static final List<String> DATASOURCE_PROFILE = Lists.newArrayList(H2, MYSQL, POSTGRESQL, HIGHGO);
 }

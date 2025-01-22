@@ -57,3 +57,11 @@ spring:
       on-profile: postgresql
   datasource:
     driver-class-name: org.postgresql.Driver
+
+---
+spring:
+  config:
+    activate:
+      on-profile: highgo
+  datasource:
+    driver-class-name: com.highgo.jdbc.Driver
